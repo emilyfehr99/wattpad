@@ -13,41 +13,60 @@ WATTPAD_USERNAME = "wlwsports"
 
 # SMS Gateway Mapping (Free Email-to-SMS)
 # Canada Examples:
-# Bell/MTS: 2043830396@text.mts.net OR 2043830396@txt.bell.ca
-# Rogers:   2043830396@pcs.rogers.com
-# Telus:    2043830396@msg.telus.com
-# Koodo:    2043830396@msg.koodomobile.com
-# Fido:     2043830396@fido.ca
-# Virgin:   2043830396@vmobile.ca
-PHONE_EMAIL = "2043830396@msg.telus.com"  # <--- Replace 'yourcarrier.ca' with your specific carrier gateway
+# Telus:    number@msg.telus.com
+# Rogers:   number@pcs.rogers.com
+# Bell/MTS: number@text.mts.net OR number@txt.bell.ca
+PHONE_EMAIL = "2043830396@msg.telus.com"
 
-# Email to send FROM (e.g. a Gmail account)
-SENDER_EMAIL = "8emilyfehr@gmail.com"  # <--- Change this to your sender email
-SENDER_PASSWORD = "nyhuejmpcxpvruel"  # <--- Change this to your sender email app password
+# Email to send FROM (e.g. 8emilyfehr@gmail.com)
+SENDER_EMAIL = "8emilyfehr@gmail.com"
+SENDER_PASSWORD = "nyhuejmpcxpvruel"
 
 # Data storage file
 STATS_FILE = "wattpad_stats.json"
 
 def get_wattpad_stats(username):
-    url = f"https://www.wattpad.com/api/v3/users/{username}/stories"
-    res = requests.get(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})
-    res.raise_for_status()
-    data = res.json()
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    
+    # 1. Get User Profile (Followers)
+    user_url = f"https://www.wattpad.com/api/v3/users/{username}?fields=numFollowers"
+    user_res = requests.get(user_url, headers=headers)
+    user_res.raise_for_status()
+    user_data = user_res.json()
+    followers = user_data.get('numFollowers', 0)
+    
+    # 2. Get Stories (Reads, Votes, Comments)
+    stories_url = f"https://www.wattpad.com/api/v3/users/{username}/stories"
+    stories_res = requests.get(stories_url, headers=headers)
+    stories_res.raise_for_status()
+    stories_data = stories_res.json()
     
     total_reads = 0
     total_votes = 0
     total_comments = 0
+    story_stats = {}
     
-    if 'stories' in data:
-        for story in data['stories']:
-            total_reads += story.get('readCount', 0)
-            total_votes += story.get('voteCount', 0)
+    if 'stories' in stories_data:
+        for story in stories_data['stories']:
+            title = story.get('title', 'Unknown')
+            reads = story.get('readCount', 0)
+            votes = story.get('voteCount', 0)
+            
+            total_reads += reads
+            total_votes += votes
             total_comments += story.get('commentCount', 0)
             
+            story_stats[title] = {
+                "reads": reads,
+                "votes": votes
+            }
+            
     return {
+        "followers": followers,
         "reads": total_reads,
         "votes": total_votes,
-        "comments": total_comments
+        "comments": total_comments,
+        "stories": story_stats
     }
 
 def send_sms(message):
@@ -55,11 +74,8 @@ def send_sms(message):
         msg = MIMEMultipart()
         msg['From'] = SENDER_EMAIL
         msg['To'] = PHONE_EMAIL
-        
-        # Add the message body
         msg.attach(MIMEText(message, 'plain'))
         
-        # Connect to Gmail SMTP (change if using another email provider)
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(SENDER_EMAIL, SENDER_PASSWORD)
@@ -71,51 +87,56 @@ def send_sms(message):
 
 def main():
     try:
-        current_stats = get_wattpad_stats(WATTPAD_USERNAME)
+        current = get_wattpad_stats(WATTPAD_USERNAME)
     except Exception as e:
         print(f"Error fetching Wattpad data: {e}")
         return
 
     # Load previous stats
-    previous_stats = {"reads": 0, "votes": 0, "comments": 0}
+    previous = {}
     if os.path.exists(STATS_FILE):
         try:
             with open(STATS_FILE, "r") as f:
-                previous_stats = json.load(f)
+                previous = json.load(f)
         except Exception:
             pass
 
-    # Calculate differences (readers that day)
-    new_reads = current_stats["reads"] - previous_stats.get("reads", 0)
-    new_votes = current_stats["votes"] - previous_stats.get("votes", 0)
-    
-    if new_reads < 0: new_reads = 0
-    if new_votes < 0: new_votes = 0
+    # DELTAS
+    new_followers = current["followers"] - previous.get("followers", current["followers"])
+    new_reads = current["reads"] - previous.get("reads", current["reads"])
+    new_votes = current["votes"] - previous.get("votes", current["votes"])
+
+    # STORY DELTAS (Optional but cool if they have multiple)
+    story_lines = []
+    prev_stories = previous.get("stories", {})
+    for title, stats in current["stories"].items():
+        prev_s = prev_stories.get(title, {"reads": stats["reads"]})
+        d_reads = stats["reads"] - prev_s["reads"]
+        if d_reads > 0:
+            story_lines.append(f"{title}: +{d_reads}")
 
     # Format SMS
-    # Keep it short for SMS
-    sms_text = (
-        f"Wattpad Daily Stats:\n"
-        f"Reads: {current_stats['reads']} (+{new_reads})\n"
-        f"Votes: {current_stats['votes']} (+{new_votes})"
-    )
+    # Keep it short!
+    sms_text = f"Wattpad Daily:\n"
+    sms_text += f"GAINS: +{new_reads} Reads, +{new_votes} Votes, +{new_followers} Fol\n"
+    sms_text += f"---\n"
+    sms_text += f"TOTAL: {current['reads']} Reads, {current['followers']} Fol\n"
     
+    if story_lines:
+        sms_text += f"---\n"
+        sms_text += "\n".join(story_lines)
+
     print("Sending Notification:")
     print(sms_text)
 
-    # Only send SMS if there's actually new reads/votes to report maybe? 
-    # Or just send it daily regardless. Let's send daily.
-    
-    # Send SMS (commented out until credentials are provided)
-    if "your_email" not in SENDER_EMAIL and "yourcarrier" not in PHONE_EMAIL:
+    # Send Notification
+    if "your_email" not in SENDER_EMAIL:
         send_sms(sms_text)
-    else:
-        print("\n[!] Please update the EMAIL/SMS configuration in the script to actually send the SMS.")
 
-    # Save current stats for tomorrow
-    current_stats["timestamp"] = datetime.now().isoformat()
+    # Save for tomorrow
+    current["timestamp"] = datetime.now().isoformat()
     with open(STATS_FILE, "w") as f:
-        json.dump(current_stats, f, indent=4)
+        json.dump(current, f, indent=4)
 
 if __name__ == "__main__":
     main()
