@@ -18,11 +18,11 @@ WATTPAD_USERNAME = "wlwsports"
 # Bell/MTS: number@text.mts.net OR number@txt.bell.ca
 PHONE_EMAIL = "2043830396@msg.telus.com"
 
-# Email to send FROM (e.g. 8emilyfehr@gmail.com)
+# Email credentials (GMAIL_USER=8emilyfehr@gmail.com, GMAIL_APP_PASSWORD=nyhuejmpcxpvruel)
 SENDER_EMAIL = "8emilyfehr@gmail.com"
 SENDER_PASSWORD = "nyhuejmpcxpvruel"
 
-# Data storage file
+# Data storage file (persisted in GitHub repository)
 STATS_FILE = "wattpad_stats.json"
 
 def get_wattpad_stats(username):
@@ -35,7 +35,7 @@ def get_wattpad_stats(username):
     user_data = user_res.json()
     followers = user_data.get('numFollowers', 0)
     
-    # 2. Get Stories (Reads, Votes, Comments)
+    # 2. Get Stories (Reads, Votes, Comments, Completion, Parts)
     stories_url = f"https://www.wattpad.com/api/v3/users/{username}/stories"
     stories_res = requests.get(stories_url, headers=headers)
     stories_res.raise_for_status()
@@ -51,14 +51,20 @@ def get_wattpad_stats(username):
             title = story.get('title', 'Unknown')
             reads = story.get('readCount', 0)
             votes = story.get('voteCount', 0)
+            comments = story.get('commentCount', 0)
+            parts = story.get('numParts', 0)
+            completed = story.get('completed', False)
             
             total_reads += reads
             total_votes += votes
-            total_comments += story.get('commentCount', 0)
+            total_comments += comments
             
             story_stats[title] = {
                 "reads": reads,
-                "votes": votes
+                "votes": votes,
+                "comments": comments,
+                "parts": parts,
+                "completed": completed
             }
             
     return {
@@ -74,6 +80,7 @@ def send_sms(message):
         msg = MIMEMultipart()
         msg['From'] = SENDER_EMAIL
         msg['To'] = PHONE_EMAIL
+        msg['Subject'] = "Wattpad Update"
         msg.attach(MIMEText(message, 'plain'))
         
         server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -101,26 +108,38 @@ def main():
         except Exception:
             pass
 
-    # DELTAS
+    # GLOBAL DELTAS
     new_followers = current["followers"] - previous.get("followers", current["followers"])
     new_reads = current["reads"] - previous.get("reads", current["reads"])
     new_votes = current["votes"] - previous.get("votes", current["votes"])
+    new_comments = current["comments"] - previous.get("comments", current["comments"])
 
-    # STORY DELTAS (Optional but cool if they have multiple)
+    # STORY DELTAS & FORMATTING
     story_lines = []
     prev_stories = previous.get("stories", {})
     for title, stats in current["stories"].items():
-        prev_s = prev_stories.get(title, {"reads": stats["reads"]})
+        prev_s = prev_stories.get(title, stats)
         d_reads = stats["reads"] - prev_s["reads"]
-        if d_reads > 0:
-            story_lines.append(f"{title}: +{d_reads}")
+        d_comments = stats["comments"] - prev_s["comments"]
+        
+        parts_info = f"({stats['parts']} Pts)"
+        completion_info = " [Done!]" if stats['completed'] else ""
+        
+        line = f"{title}: {parts_info}{completion_info}"
+        updates = []
+        if d_reads > 0: updates.append(f"+{d_reads}R")
+        if d_comments > 0: updates.append(f"+{d_comments}C")
+        
+        if updates:
+            line += " " + ", ".join(updates)
+            story_lines.append(line)
 
     # Format SMS
-    # Keep it short!
-    sms_text = f"Wattpad Daily:\n"
-    sms_text += f"GAINS: +{new_reads} Reads, +{new_votes} Votes, +{new_followers} Fol\n"
+    dt_now = datetime.now().strftime("%m/%d %H:%M")
+    sms_text = f"Wattpad Update ({dt_now}):\n"
+    sms_text += f"GAINS: +{new_reads}R, +{new_votes}V, +{new_comments}C, +{new_followers}Fol\n"
     sms_text += f"---\n"
-    sms_text += f"TOTAL: {current['reads']} Reads, {current['followers']} Fol\n"
+    sms_text += f"TOTAL: {current['reads']}R, {current['followers']}Fol\n"
     
     if story_lines:
         sms_text += f"---\n"
