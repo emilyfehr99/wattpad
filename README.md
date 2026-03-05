@@ -33,16 +33,15 @@ Ensure you have the requests library installed:
 pip install requests
 ```
 
-### 3. Automating Daily Texts (Mac OS)
-To run this automatically every single day, you can use the built-in Mac OS `cron` job scheduler.
+### 3. Deploy to GitHub (Free Automation)
+To run this automatically every single day at 7:00 PM without needing your Mac to be on:
 
-1. Open your terminal.
-2. Type `crontab -e` and press Enter.
-3. Press `i` to enter insert mode.
-4. Paste the following line to run the script every day at 7:00 PM (19:00):
+1. Go to [GitHub.com](https://github.com/) and create a new repository named `wattpad` (Private or Public).
+2. Open your Mac Terminal and push this folder to your new repository:
 ```bash
-0 19 * * * /usr/bin/python3 /Users/emilyfehr8/CascadeProjects/wattpad_notifier.py >> /tmp/wattpad_cron.log 2>&1
+cd /Users/emilyfehr8/CascadeProjects/wattpad_notifier
+git remote add origin https://github.com/YOUR_USERNAME/wattpad.git
+git branch -M main
+git push -u origin main
 ```
-5. Press `Esc`, then type `:wq`, and press Enter to save and exit.
-
-You will now receive a text every morning with your daily Wattpad stats!
+3. GitHub Actions will now automatically run the script every day at your scheduled time (7:00 PM CST). You will start receiving texts immediately!
