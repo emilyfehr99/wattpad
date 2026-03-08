@@ -6,6 +6,7 @@ This repo sends a **daily SMS** to your phone at **7:00 PM Central** with your W
 
 - **GitHub Actions** runs the script every day at 7 PM Central.
 - The script fetches your Wattpad stats (reads, votes, comments, followers) from the Wattpad API.
+- The SMS includes **GAINS** (daily deltas), **TOTAL** counts, **KEY TIMES** (last chapter date, new parts), **TODAY'S RANKS** (when you add them to `wattpad_stats.json`), and per-story lines.
 - It sends an email to your carrier’s **Email-to-SMS gateway** (e.g. `number@msg.telus.com`); your carrier turns that into an SMS.
 
 ## Setup (one-time)
@@ -32,7 +33,7 @@ In your repo: **Settings → Secrets and variables → Actions → New repositor
 
 ### 3. Deploy
 
-Push this repo (or copy these files into [emilyfehr99/wattpad](https://github.com/emilyfehr99/wattpad)). The workflow **Wattpad Daily SMS** will run on schedule. You can also run it manually: **Actions → Wattpad Daily SMS → Run workflow.**
+Push this repo (or copy these files into [emilyfehr99/wattpad](https://github.com/emilyfehr99/wattpad)). The workflow **Daily Wattpad SMS Notifier** will run on schedule. You can also run it manually: **Actions → Daily Wattpad SMS Notifier → Run workflow.**
 
 ## Today’s ranks in the SMS
 
@@ -58,7 +59,7 @@ After the daily job runs, it commits updated `wattpad_stats.json` (including any
 
 ## Files
 
-- `wattpad_notifier.py` – Fetches Wattpad API, builds SMS text (with ranks if present), sends via Email-to-SMS.
+- `wattpad_notifier.py` – Fetches Wattpad API, builds SMS (GAINS, TOTAL, KEY TIMES, TODAY'S RANKS, story lines), sends via Email-to-SMS.
 - `wattpad_stats.json` – Persisted stats (and optional `rankings`); updated and committed by the workflow.
 - `.github/workflows/daily.yml` – Runs at 7 PM Central, uses the secrets above.
 
