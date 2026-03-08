@@ -1,8 +1,18 @@
 {
-  "followers": 0,
-  "reads": 0,
-  "votes": 0,
-  "comments": 0,
-  "stories": {},
-  "rankings": {}
+    "followers": 1,
+    "reads": 638,
+    "votes": 48,
+    "comments": 6,
+    "stories": {
+        "Blue Lines, Red Flags": {
+            "id": "407902208",
+            "reads": 638,
+            "votes": 48,
+            "comments": 6,
+            "parts": 11,
+            "completed": false
+        }
+    },
+    "rankings": {},
+    "timestamp": "2026-03-08T19:27:20.964922"
 }
