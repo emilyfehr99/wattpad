@@ -26,20 +26,33 @@ def get_wattpad_stats(username):
     user_res = requests.get(user_url, headers=headers)
     user_res.raise_for_status()
     user_data = user_res.json()
-    followers = user_data.get('numFollowers', 0)
+    # API may return dict or list
+    if isinstance(user_data, list) and user_data:
+        user_data = user_data[0]
+    followers = user_data.get('numFollowers', 0) if isinstance(user_data, dict) else 0
 
     stories_url = f"https://www.wattpad.com/api/v3/users/{username}/stories"
     stories_res = requests.get(stories_url, headers=headers)
     stories_res.raise_for_status()
     stories_data = stories_res.json()
+    if isinstance(stories_data, list):
+        stories_data = {'stories': stories_data}
 
     total_reads = 0
     total_votes = 0
     total_comments = 0
     story_stats = {}
 
-    if 'stories' in stories_data:
-        for story in stories_data['stories']:
+    raw_stories = stories_data.get('stories') if isinstance(stories_data, dict) else None
+    if raw_stories is not None:
+        # API may return list of story dicts or dict of id -> story
+        if isinstance(raw_stories, dict):
+            stories_list = list(raw_stories.values())
+        else:
+            stories_list = raw_stories if isinstance(raw_stories, list) else []
+        for story in stories_list:
+            if not isinstance(story, dict):
+                continue
             title = story.get('title', 'Unknown')
             story_id = story.get('id')
             reads = story.get('readCount', 0)
@@ -143,6 +156,12 @@ def send_sms(message):
 
 
 def main():
+    if not all([PHONE_EMAIL, SENDER_EMAIL, SENDER_PASSWORD]):
+        print("ERROR: Missing secrets. In repo Settings → Secrets and variables → Actions, add:")
+        print("  PHONE_EMAIL (e.g. 2043830396@msg.telus.com)")
+        print("  SENDER_EMAIL (your Gmail)")
+        print("  SENDER_PASSWORD (Gmail app password)")
+        return
     try:
         current = get_wattpad_stats(WATTPAD_USERNAME)
     except Exception as e:
