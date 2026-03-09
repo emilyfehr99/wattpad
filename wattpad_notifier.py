@@ -1,4 +1,5 @@
 import os
+import re
 import smtplib
 import json
 import requests
@@ -125,6 +126,69 @@ def format_key_times(story_title, parts_with_dates, prev_part_count):
     return " | ".join(lines) if lines else None
 
 
+def get_wattpad_rankings(current):
+    """
+    Scrape Wattpad rankings for each story using the public rankings page.
+    Looks for patterns like '#397 in Young Adult' and maps them into rank keys.
+    """
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    all_rankings = {}
+
+    for title, stats in current.get("stories", {}).items():
+        story_id = stats.get("id")
+        if not story_id:
+            continue
+
+        url = f"https://www.wattpad.com/story/{story_id}/rankings"
+        try:
+            resp = requests.get(url, headers=headers, timeout=10)
+            resp.raise_for_status()
+            html = resp.text
+        except Exception:
+            continue
+
+        # Find things like "#397 in Young Adult"
+        matches = re.findall(r"#(\\d+)\\s+in\\s+([^<\\n]+)", html)
+        if not matches:
+            continue
+
+        story_ranks = {}
+        for num, cat in matches:
+            cat_clean = cat.strip().lower()
+            key = None
+            if "young adult" in cat_clean or "ya" in cat_clean:
+                key = "young_adult"
+            elif "teen fiction" in cat_clean or ("teen" in cat_clean and "fiction" in cat_clean):
+                key = "teen_fiction"
+            elif "romance" in cat_clean:
+                key = "romance"
+            elif "sports" in cat_clean or "sport" in cat_clean:
+                key = "sports"
+            elif "hockey" in cat_clean:
+                key = "hockey"
+            else:
+                # Fallback: normalized category name
+                key = re.sub(r"[^a-z0-9]+", "_", cat_clean).strip("_")[:32]
+
+            rank_val = f"#{num}"
+            if key not in story_ranks:
+                story_ranks[key] = rank_val
+            else:
+                # keep best (lowest number)
+                try:
+                    existing = int(story_ranks[key].lstrip("#"))
+                    new_val = int(num)
+                    if new_val < existing:
+                        story_ranks[key] = rank_val
+                except Exception:
+                    story_ranks[key] = rank_val
+
+        if story_ranks:
+            all_rankings[title] = story_ranks
+
+    return all_rankings
+
+
 def send_sms(message):
     try:
         msg = MIMEMultipart()
@@ -158,8 +222,12 @@ def main():
         except Exception:
             pass
 
-    # Keep saved rankings so they show in the message (edit wattpad_stats.json to add them)
-    current["rankings"] = previous.get("rankings", {})
+    # Scrape fresh rankings; if that fails, fall back to last saved rankings
+    scraped_rankings = get_wattpad_rankings(current)
+    if scraped_rankings:
+        current["rankings"] = scraped_rankings
+    else:
+        current["rankings"] = previous.get("rankings", {})
     prev_stories = previous.get("stories", {})
 
     # Key times: last chapter date, new parts since last run
