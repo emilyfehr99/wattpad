@@ -52,6 +52,7 @@ def get_wattpad_stats(username):
                 continue
             title = story.get('title', 'Unknown')
             story_id = story.get('id')
+            story_url = story.get('url')  # e.g. "/story/407902208-blue-lines-red-flags"
             reads = story.get('readCount', 0)
             votes = story.get('voteCount', 0)
             comments = story.get('commentCount', 0)
@@ -64,6 +65,7 @@ def get_wattpad_stats(username):
 
             story_stats[title] = {
                 "id": story_id,
+                "url": story_url,
                 "reads": reads,
                 "votes": votes,
                 "comments": comments,
@@ -139,12 +141,29 @@ def get_wattpad_rankings(current):
         if not story_id:
             continue
 
-        url = f"https://www.wattpad.com/story/{story_id}/rankings"
-        try:
-            resp = requests.get(url, headers=headers, timeout=10)
-            resp.raise_for_status()
-            html = resp.text
-        except Exception:
+        # Prefer the full story URL (includes slug), fall back to id-only form
+        url_path = stats.get("url")
+        candidates = []
+        if url_path:
+            if url_path.startswith("http"):
+                base = url_path
+            else:
+                base = "https://www.wattpad.com" + url_path
+            candidates.append(base.rstrip("/") + "/rankings")
+        candidates.append(f"https://www.wattpad.com/story/{story_id}/rankings")
+
+        html = None
+        for url in candidates:
+            try:
+                resp = requests.get(url, headers=headers, timeout=10)
+                if resp.status_code == 404:
+                    continue
+                resp.raise_for_status()
+                html = resp.text
+                break
+            except Exception:
+                html = None
+        if not html:
             continue
 
         # Find things like "#397 in Young Adult"
