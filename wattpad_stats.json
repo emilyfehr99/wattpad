@@ -1,28 +1,27 @@
 {
-  "followers": 1,
-  "reads": 670,
-  "votes": 48,
-  "comments": 6,
-  "stories": {
-    "Blue Lines, Red Flags": {
-      "id": "407902208",
-      "reads": 670,
-      "votes": 48,
-      "comments": 6,
-      "parts": 11,
-      "completed": false,
-      "part_count": 11,
-      "last_part_date": "2026-03-07"
-    }
-  },
-  "rankings": {
-    "Blue Lines, Red Flags": {
-      "young_adult": "#397",
-      "sports": "#110",
-      "romance": "#572",
-      "teen_fiction": "#249",
-      "hockey": "#12"
-    }
-  },
-  "timestamp": "2026-03-09T03:33:51.585259"
+    "followers": 2,
+    "reads": 779,
+    "votes": 55,
+    "comments": 6,
+    "stories": {
+        "Blue Lines, Red Flags": {
+            "id": "407902208",
+            "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
+            "reads": 779,
+            "votes": 55,
+            "comments": 6,
+            "parts": 13,
+            "completed": false
+        }
+    },
+    "rankings": {
+        "Blue Lines, Red Flags": {
+            "young_adult": "#397",
+            "sports": "#110",
+            "romance": "#572",
+            "teen_fiction": "#249",
+            "hockey": "#12"
+        }
+    },
+    "timestamp": "2026-03-10T03:26:08.178922"
 }
