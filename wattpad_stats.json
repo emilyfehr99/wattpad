@@ -1,14 +1,14 @@
 {
     "followers": 2,
-    "reads": 1213,
-    "votes": 84,
+    "reads": 1399,
+    "votes": 96,
     "comments": 7,
     "stories": {
         "Blue Lines, Red Flags": {
             "id": "407902208",
             "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
-            "reads": 1213,
-            "votes": 84,
+            "reads": 1399,
+            "votes": 96,
             "comments": 7,
             "parts": 30,
             "completed": false
@@ -16,12 +16,12 @@
     },
     "rankings": {
         "Blue Lines, Red Flags": {
-            "young_adult": "#397",
-            "sports": "#110",
-            "romance": "#572",
-            "teen_fiction": "#249",
-            "hockey": "#12"
+            "sports": "#66",
+            "young_adult": "#358",
+            "slowburn": "#833",
+            "hockey": "#92",
+            "carolineharvey": "#2"
         }
     },
-    "timestamp": "2026-03-12T03:31:55.039624"
+    "timestamp": "2026-03-12T09:41:26.802354"
 }

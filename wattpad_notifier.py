@@ -128,12 +128,26 @@ def format_key_times(story_title, parts_with_dates, prev_part_count):
     return " | ".join(lines) if lines else None
 
 
+# Authenticated cookies from Google Login (temporary session)
+WATTPAD_COOKIES = '__qca=I0-1271867260-1773324900255; wp_id=47f06fdd-002e-4a88-b186-836110644eba; lang=1; _afp25f_=0; te_session_id=1773323383368; AMP_TOKEN=%24NOT_FOUND; _gid=GA1.2.367091236.1773323384; _col_uuid=d7d53636-dc9c-4cc9-839b-866996001081-61f8; _gcl_au=1.1.1758562740.1773323385; _fbp=fb.1.1773323384866.993177858647880835; adMetrics=0; wp-web-auth-cache-bust=0; _pbeb_=1; _pbbeta25_=1; ff=1; dpr=2; tz=5; X-Time-Zone=America%2FWinnipeg; _pubcid=07b89579-9aea-46c1-bc34-1761bc107af1; _pubcid_cst=V0fMHQ%3D%3D; signupFrom=user_profile; cto_bundle=cp0urV9WbmxuUW9FR2s5NVhqcWpZeVY2eEZ5RTVIdXE2ZTh5YlB3aWFaa29OR05sOXhNd3JHcWFGSUEyWG4wTiUyQmIlMkI4dDIxVmM0dHN3c2xlZWtPckNMem1jZUlCNjkxVm5LeHRRV0JBTXRDNTRhZ28lMkYyZElQenJuOXp3TkclMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; cto_bidid=UzPRml9jd1BHT0NTQTNteFoybFMyWlVtaFlXMlhiNjlVcHdkWGRGYXF4V0ZjWnhJQUdkV3lpZHNpJTJCc3lpUUwzRTU2ZFc5dmFNaEwzdGRSRnh0Mmw0WFE4TFNWYzdBcGxnOURoT1Vnd2x6aFhzcFN4TklHZXVzeXFyWmJSN0FlTWFHNExsdU9vWWVDUSUyRnQ0QUY3YXpMWWVEQ2JRJTNEJTNE; g_state={"i_l":0,"i_ll":1773324934485,"i_b":"xhMIE21fzY/QUD9sHlRt9YZbhKskNghsB+VYr8kc5Kw","i_e":{"enable_itp_optimization":0}}; sn__time=j%3Anull; wp-web-page=true; locale=en_CA; RT=r=https%3A%2F%2Fwww.wattpad.com%2Flogin%3Ferror%3D1172%26nextUrl%3D%252Fhome&ul=1773325374333&hd=1773325419992; _ga_FNDTZ0MZDQ=GS2.1.s1773323383$o1$g1$t1773325420$j46$l0$h0; _ga=GA1.1.2057394051.1773323384'
+
 def get_wattpad_rankings(current):
     """
-    Scrape Wattpad rankings for each story using the public rankings page.
-    Looks for patterns like '#397 in Young Adult' and maps them into rank keys.
+    Scrape Wattpad rankings for each story using the authenticated session.
+    Parses the window.__remixContext JSON object found in the rankings page.
     """
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+    session = requests.Session()
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+    })
+    
+    # Load cookies
+    for part in WATTPAD_COOKIES.split(';'):
+        if '=' in part:
+            k, v = part.split('=', 1)
+            session.cookies.set(k.strip(), v.strip())
+
     all_rankings = {}
 
     for title, stats in current.get("stories", {}).items():
@@ -141,69 +155,59 @@ def get_wattpad_rankings(current):
         if not story_id:
             continue
 
-        # Prefer the full story URL (includes slug), fall back to id-only form
-        url_path = stats.get("url")
-        candidates = []
-        if url_path:
-            if url_path.startswith("http"):
-                base = url_path
-            else:
-                base = "https://www.wattpad.com" + url_path
-            candidates.append(base.rstrip("/") + "/rankings")
-        candidates.append(f"https://www.wattpad.com/story/{story_id}/rankings")
-
-        html = None
-        for url in candidates:
-            try:
-                resp = requests.get(url, headers=headers, timeout=10)
-                if resp.status_code == 404:
-                    continue
-                resp.raise_for_status()
-                html = resp.text
-                break
-            except Exception:
-                html = None
-        if not html:
-            continue
-
-        # Find things like "#397 in Young Adult"
-        matches = re.findall(r"#(\\d+)\\s+in\\s+([^<\\n]+)", html)
-        if not matches:
-            continue
-
-        story_ranks = {}
-        for num, cat in matches:
-            cat_clean = cat.strip().lower()
-            key = None
-            if "young adult" in cat_clean or "ya" in cat_clean:
-                key = "young_adult"
-            elif "teen fiction" in cat_clean or ("teen" in cat_clean and "fiction" in cat_clean):
-                key = "teen_fiction"
-            elif "romance" in cat_clean:
-                key = "romance"
-            elif "sports" in cat_clean or "sport" in cat_clean:
-                key = "sports"
-            elif "hockey" in cat_clean:
-                key = "hockey"
-            else:
-                # Fallback: normalized category name
-                key = re.sub(r"[^a-z0-9]+", "_", cat_clean).strip("_")[:32]
-
-            rank_val = f"#{num}"
-            if key not in story_ranks:
-                story_ranks[key] = rank_val
-            else:
-                # keep best (lowest number)
+        url = f"https://www.wattpad.com/story/{story_id}/rankings"
+        try:
+            # We use a session to maintain cookies
+            resp = session.get(url, timeout=15)
+            print(f"Fetch {title} rankings: Status {resp.status_code}, Length {len(resp.text)}")
+            # Even if 404, we check for remixContext as it might be an app shell
+            html = resp.text
+            
+            story_ranks = {}
+            
+            # Method 1: Parse window.__remixContext (Most robust)
+            match = re.search(r'window\.__remixContext\s*=\s*(\{.*?});', html)
+            if match:
+                print(f"Found Remix Context for {title}")
                 try:
-                    existing = int(story_ranks[key].lstrip("#"))
-                    new_val = int(num)
-                    if new_val < existing:
-                        story_ranks[key] = rank_val
-                except Exception:
-                    story_ranks[key] = rank_val
+                    ctx = json.loads(match.group(1))
+                    # Rankings are usually in loaderData for the rankings route
+                    loader_data = ctx.get("state", {}).get("loaderData", {})
+                    # The key is often dynamic based on the route, so we search all keys for "tagRankings"
+                    for route_key, route_data in loader_data.items():
+                        if isinstance(route_data, dict) and "tagRankings" in route_data:
+                            for item in route_data["tagRankings"]:
+                                name = item.get("name", "unknown")
+                                rank = item.get("rank")
+                                if rank:
+                                    story_ranks[name] = f"#{rank}"
+                            break
+                except Exception as je:
+                    print(f"JSON parse error for {title}: {je}")
 
-        if story_ranks:
-            all_rankings[title] = story_ranks
+            # Method 2: Regex fallback if JSON parsing didn't find anything
+            if not story_ranks:
+                matches = re.findall(r"#(\d+)\s+in\s+([^<\\n]+)", html)
+                for num, cat in matches:
+                    cat_clean = re.sub(r"[^a-z0-9]+", "_", cat.strip().lower()).strip("_")[:32]
+                    rank_val = f"#{num}"
+                    if cat_clean not in story_ranks:
+                        story_ranks[cat_clean] = rank_val
+
+            if story_ranks:
+                # Normalize keys for specific requested categories
+                normalized = {}
+                for k, v in story_ranks.items():
+                    key = k
+                    if "young_adult" in k or "ya" in k: key = "young_adult"
+                    elif "teen_fiction" in k: key = "teen_fiction"
+                    elif "hockey" in k: key = "hockey"
+                    elif "sports" in k: key = "sports"
+                    normalized[key] = v
+                all_rankings[title] = normalized
+                
+        except Exception as e:
+            print(f"Error fetching rankings for {title}: {e}")
 
     return all_rankings
 
