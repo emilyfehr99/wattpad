@@ -1,16 +1,16 @@
 {
     "followers": 2,
-    "reads": 1599,
-    "votes": 99,
+    "reads": 1705,
+    "votes": 119,
     "comments": 9,
     "stories": {
         "Blue Lines, Red Flags": {
             "id": "407902208",
             "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
-            "reads": 1599,
-            "votes": 99,
+            "reads": 1705,
+            "votes": 119,
             "comments": 9,
-            "parts": 30,
+            "parts": 32,
             "completed": false
         }
     },
@@ -23,5 +23,5 @@
             "carolineharvey": "#2"
         }
     },
-    "timestamp": "2026-03-13T03:28:20.540561"
+    "timestamp": "2026-03-14T03:26:07.033007"
 }
