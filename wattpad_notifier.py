@@ -129,7 +129,8 @@ def format_key_times(story_title, parts_with_dates, prev_part_count):
 
 
 # Authenticated cookies from Google Login (temporary session)
-WATTPAD_COOKIES = '__qca=I0-1271867260-1773324900255; wp_id=47f06fdd-002e-4a88-b186-836110644eba; lang=1; _afp25f_=0; te_session_id=1773323383368; AMP_TOKEN=%24NOT_FOUND; _gid=GA1.2.367091236.1773323384; _col_uuid=d7d53636-dc9c-4cc9-839b-866996001081-61f8; _gcl_au=1.1.1758562740.1773323385; _fbp=fb.1.1773323384866.993177858647880835; adMetrics=0; wp-web-auth-cache-bust=0; _pbeb_=1; _pbbeta25_=1; ff=1; dpr=2; tz=5; X-Time-Zone=America%2FWinnipeg; _pubcid=07b89579-9aea-46c1-bc34-1761bc107af1; _pubcid_cst=V0fMHQ%3D%3D; signupFrom=user_profile; cto_bundle=cp0urV9WbmxuUW9FR2s5NVhqcWpZeVY2eEZ5RTVIdXE2ZTh5YlB3aWFaa29OR05sOXhNd3JHcWFGSUEyWG4wTiUyQmIlMkI4dDIxVmM0dHN3c2xlZWtPckNMem1jZUlCNjkxVm5LeHRRV0JBTXRDNTRhZ28lMkYyZElQenJuOXp3TkclMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; cto_bidid=UzPRml9jd1BHT0NTQTNteFoybFMyWlVtaFlXMlhiNjlVcHdkWGRGYXF4V0ZjWnhJQUdkV3lpZHNpJTJCc3lpUUwzRTU2ZFc5dmFNaEwzdGRSRnh0Mmw0WFE4TFNWYzdBcGxnOURoT1Vnd2x6aFhzcFN4TklHZXVzeXFyWmJSN0FlTWFHNExsdU9vWWVDUSUyRnQ0QUY3YXpMWWVEQ2JRJTNEJTNE; g_state={"i_l":0,"i_ll":1773324934485,"i_b":"xhMIE21fzY/QUD9sHlRt9YZbhKskNghsB+VYr8kc5Kw","i_e":{"enable_itp_optimization":0}}; sn__time=j%3Anull; wp-web-page=true; locale=en_CA; RT=r=https%3A%2F%2Fwww.wattpad.com%2Flogin%3Ferror%3D1172%26nextUrl%3D%252Fhome&ul=1773325374333&hd=1773325419992; _ga_FNDTZ0MZDQ=GS2.1.s1773323383$o1$g1$t1773325420$j46$l0$h0; _ga=GA1.1.2057394051.1773323384'
+# Authenticated cookies from Google Login (including HttpOnly tokens)
+WATTPAD_COOKIES = 'remix_host_header_100=1; wp_id=47f06fdd-002e-4a88-b186-836110644eba; lang=1; _col_uuid=d7d53636-dc9c-4cc9-839b-866996001081-61f8; token=372392295%3A2%3A1773325374%3A5EgmhrIGvFcKNvJzdaCQP83jbGReLvWKhdW8UiI8bUqGsjcIkwGr9R_dQ6rJaCYa; _gcl_au=1.1.1758562740.1773323385; _fbp=fb.1.1773323384866.993177858647880835; adMetrics=0; wp-web-auth-cache-bust=0; _pbeb_=1; _pbbeta25_=1; ff=1; dpr=2; tz=5; X-Time-Zone=America%2FWinnipeg; _pubcid=07b89579-9aea-46c1-bc34-1761bc107af1; _pubcid_cst=V0fMHQ%3D%3D; cto_bundle=cp0urV9WbmxuUW9FR2s5NVhqcWpZeVY2eEZ5RTVIdXE2ZTh5YlB3aWFaa29OR05sOXhNd3JHcWFGSUEyWG4wTiUyQmIlMkI4dDIxVmM0dHN3c2xlZWtPckNMem1jZUlCNjkxVm5LeHRRV0JBTXRDNTRhZ28lMkYyZElQenJuOXp3TkclMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; cto_bidid=UzPRml9jd1BHT0NTQTNteFoybFMyWlVtaFlXMlhiNjlVcHdkWGRGYXF4V0ZjWnhJQUdkV3lpZHNpJTJCc3lpUUwzRTU2ZFc5dmFNaEwzdGRSRnh0Mmw0WFE4TFNWYzdBcGxnOURoT1Vnd2x6aFhzcFN4TklHZXVzeXFyWmJSN0FlTWFHNExsdU9vWWVDUSUyRnQ0QUY3YXpMWWVEQ2JRJTNEJTNE; g_state={"i_l":0,"i_ll":1773324934485,"i_b":"xhMIE21fzY/QUD9sHlRt9YZbhKskNghsB+VYr8kc5Kw","i_e":{"enable_itp_optimization":0}}; wp-web-page=true; locale=en_CA; te_session_id=1773664654713; AMP_TOKEN=%24NOT_FOUND; _ga=GA1.2.2057394051.1773323384; _gid=GA1.2.1695821674.1773664656; _ga_FNDTZ0MZDQ=GS2.1.s1773664655$o2$g1$t1773664665$j50$l0$h0'
 
 def get_wattpad_rankings(current):
     """
@@ -155,44 +156,60 @@ def get_wattpad_rankings(current):
         if not story_id:
             continue
 
-        url = f"https://www.wattpad.com/story/{story_id}/rankings"
+        # Remix framework direct data request
+        rankings_data_url = f"https://www.wattpad.com/story/{story_id}/rankings?_data=routes%2Fstory_.$storyid.rankings"
         try:
-            # We use a session to maintain cookies
-            resp = session.get(url, timeout=15)
-            print(f"Fetch {title} rankings: Status {resp.status_code}, Length {len(resp.text)}")
-            # Even if 404, we check for remixContext as it might be an app shell
-            html = resp.text
+            # We use a session with specific Remix headers
+            resp = session.get(rankings_data_url, timeout=15, headers={
+                'Accept': 'application/json',
+                'X-Remix-Redirect': 'true'
+            })
+            print(f"Fetch {title} rankings: Status {resp.status_code}")
             
             story_ranks = {}
-            
-            # Method 1: Parse window.__remixContext (Most robust)
-            match = re.search(r'window\.__remixContext\s*=\s*(\{.*?});', html)
-            if match:
-                print(f"Found Remix Context for {title}")
+            if resp.status_code == 200:
                 try:
-                    ctx = json.loads(match.group(1))
-                    # Rankings are usually in loaderData for the rankings route
-                    loader_data = ctx.get("state", {}).get("loaderData", {})
-                    # The key is often dynamic based on the route, so we search all keys for "tagRankings"
-                    for route_key, route_data in loader_data.items():
-                        if isinstance(route_data, dict) and "tagRankings" in route_data:
-                            for item in route_data["tagRankings"]:
-                                name = item.get("name", "unknown")
-                                rank = item.get("rank")
-                                if rank:
-                                    story_ranks[name] = f"#{rank}"
-                            break
+                    data = resp.json()
+                    tag_rankings = data.get("tagRankings", [])
+                    for item in tag_rankings:
+                        name = item.get("name", "unknown")
+                        rank = item.get("rank")
+                        if rank:
+                            story_ranks[name] = f"#{rank}"
                 except Exception as je:
-                    print(f"JSON parse error for {title}: {je}")
-
-            # Method 2: Regex fallback if JSON parsing didn't find anything
+                    print(f"JSON api parse error for {title}: {je}")
+            
+            # Fallback to HTML scraping if API failed or returned nothing
             if not story_ranks:
-                matches = re.findall(r"#(\d+)\s+in\s+([^<\\n]+)", html)
-                for num, cat in matches:
-                    cat_clean = re.sub(r"[^a-z0-9]+", "_", cat.strip().lower()).strip("_")[:32]
-                    rank_val = f"#{num}"
-                    if cat_clean not in story_ranks:
-                        story_ranks[cat_clean] = rank_val
+                url = f"https://www.wattpad.com/story/{story_id}/rankings"
+                resp = session.get(url, timeout=15)
+                html = resp.text
+                
+                # Method 1: Parse window.__remixContext (Legacy Backup)
+                match = re.search(r'window\.__remixContext\s*=\s*(\{.*?});', html)
+                if match:
+                    try:
+                        ctx = json.loads(match.group(1))
+                        loader_data = ctx.get("state", {}).get("loaderData", {})
+                        for route_key, route_data in loader_data.items():
+                            if isinstance(route_data, dict) and "tagRankings" in route_data:
+                                for item in route_data["tagRankings"]:
+                                    name = item.get("name", "unknown")
+                                    rank = item.get("rank")
+                                    if rank:
+                                        story_ranks[name] = f"#{rank}"
+                                break
+                    except Exception:
+                        pass
+
+                # Method 2: Regex fallback
+                if not story_ranks:
+                    matches = re.findall(r"#(\d+)\s+in\s+([^<\\n]+)", html)
+                    for num, cat in matches:
+                        cat_clean = re.sub(r"[^a-z0-9]+", "_", cat.strip().lower()).strip("_")[:32]
+                        rank_val = f"#{num}"
+                        if cat_clean not in story_ranks:
+                            story_ranks[cat_clean] = rank_val
 
             if story_ranks:
                 # Normalize keys for specific requested categories
