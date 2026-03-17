@@ -130,25 +130,76 @@ def format_key_times(story_title, parts_with_dates, prev_part_count):
 
 # Authenticated cookies from Google Login (temporary session)
 # Authenticated cookies from Google Login (including HttpOnly tokens)
-WATTPAD_COOKIES = 'remix_host_header_100=1; wp_id=47f06fdd-002e-4a88-b186-836110644eba; lang=1; _col_uuid=d7d53636-dc9c-4cc9-839b-866996001081-61f8; token=372392295%3A2%3A1773325374%3A5EgmhrIGvFcKNvJzdaCQP83jbGReLvWKhdW8UiI8bUqGsjcIkwGr9R_dQ6rJaCYa; _gcl_au=1.1.1758562740.1773323385; _fbp=fb.1.1773323384866.993177858647880835; adMetrics=0; wp-web-auth-cache-bust=0; _pbeb_=1; _pbbeta25_=1; ff=1; dpr=2; tz=5; X-Time-Zone=America%2FWinnipeg; _pubcid=07b89579-9aea-46c1-bc34-1761bc107af1; _pubcid_cst=V0fMHQ%3D%3D; cto_bundle=cp0urV9WbmxuUW9FR2s5NVhqcWpZeVY2eEZ5RTVIdXE2ZTh5YlB3aWFaa29OR05sOXhNd3JHcWFGSUEyWG4wTiUyQmIlMkI4dDIxVmM0dHN3c2xlZWtPckNMem1jZUlCNjkxVm5LeHRRV0JBTXRDNTRhZ28lMkYyZElQenJuOXp3TkclMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; cto_bidid=UzPRml9jd1BHT0NTQTNteFoybFMyWlVtaFlXMlhiNjlVcHdkWGRGYXF4V0ZjWnhJQUdkV3lpZHNpJTJCc3lpUUwzRTU2ZFc5dmFNaEwzdGRSRnh0Mmw0WFE4TFNWYzdBcGxnOURoT1Vnd2x6aFhzcFN4TklHZXVzeXFyWmJSN0FlTWFHNExsdU9vWWVDUSUyRnQ0QUY3YXpMWWVEQ2JRJTNEJTNE; g_state={"i_l":0,"i_ll":1773324934485,"i_b":"xhMIE21fzY/QUD9sHlRt9YZbhKskNghsB+VYr8kc5Kw","i_e":{"enable_itp_optimization":0}}; wp-web-page=true; locale=en_CA; te_session_id=1773664654713; AMP_TOKEN=%24NOT_FOUND; _ga=GA1.2.2057394051.1773323384; _gid=GA1.2.1695821674.1773664656; _ga_FNDTZ0MZDQ=GS2.1.s1773664655$o2$g1$t1773664665$j50$l0$h0'
+WATTPAD_COOKIES = 'remix_host_header_100=1; wp_id=47f06fdd-002e-4a88-b186-836110644eba; lang=1; _col_uuid=d7d53636-dc9c-4cc9-839b-866996001081-61f8; _gcl_au=1.1.1758562740.1773323385; _fbp=fb.1.1773323384866.993177858647880835; ff=1; dpr=2; tz=5; X-Time-Zone=America%2FWinnipeg; _pubcid=07b89579-9aea-46c1-bc34-1761bc107af1; _pubcid_cst=V0fMHQ%3D%3D; g_state={"i_l":0,"i_ll":1773324934485,"i_b":"xhMIE21fzY/QUD9sHlRt9YZbhKskNghsB+VYr8kc5Kw","i_e":{"enable_itp_optimization":0}}; token=372392295%3A2%3A1773325374%3A5EgmhrIGvFcKNvJzdaCQP83jbGReLvWKhdW8UiI8bUqGsjcIkwGr9R_dQ6rJaCYa; isStaff=1; te_session_id=1773754734717; AMP_TOKEN=%24NOT_FOUND; _gid=GA1.2.1209098643.1773754736; locale=en_US; signupFrom=story_reading; seen-series-onboarding=1; wp-web-page=true; locale=en_CA; RT=r=https%3A%2F%2Fwww.wattpad.com%2F1609583934-blue-lines-red-flags-chapter-1-caroline&ul=1773754966774&hd=1773754967207; _ga_FNDTZ0MZDQ=GS2.1.s1773754734$o3$g1$t1773754968$j32$l0$h0; _ga=GA1.1.2057394051.1773323384; cto_bundle=5cJbrF9WbmxuUW9FR2s5NVhqcWpZeVY2eEZeJTMfMkJDNUZ3QzlnYkpieSUyQmNHVDNrdzB0JTJGS3FkcmxFSldtVmRHTnNTV3VLTnVXQ1d5UGZPb1pocXJTdE1TRTRJJTJGU1loWk1IakIlMkJ0cHdYelhJb255aGtZbzNYd29ESEolMkI3NGZiV3pDZTFjT1haSHZwcU5FWG5NTG1UeUlTJTJGSG8lMkYyZElQenJuOXp3TkclMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; cto_bidid=R1mETl9jd1BHT0NTQTNteFoybFMyWlVtaFlXMlhiNjlVcHdkWGRGYXF4V0ZjWnhJQUdkV3lpZHNpJTJCc3lpUUwzRTU2ZFdCa3BkczBoVzRGQzNHJTJCUlNCUEhlbUFUN1pzZzVBR29BU042JTJCMkglMkFOUUxJSTNWZEpEQUFlelJPNjRDbXB2VHRvNzklMkZ2ZXZGSm8xUml5bTljb0N3dnVSRzlWbEp3UURyJTJGdkxhYnRtQ2pWdUpQNVltdVdLTm9RJTNEJTNE; __qca=I0-2104904451-1773754971093'
 
-def get_wattpad_rankings(current):
+def get_followers_list(session):
+    """Fetch the current list of follower usernames."""
+    followers = []
+    try:
+        url = f"https://www.wattpad.com/api/v3/users/{WATTPAD_USERNAME}/followers?offset=0&limit=100&fields=users(username)"
+        resp = session.get(url, timeout=15)
+        if resp.status_code == 200:
+            data = resp.json()
+            users = data.get("users", [])
+            followers = [u.get("username") for u in users if u.get("username")]
+    except Exception as e:
+        print(f"Error fetching followers: {e}")
+    return followers
+
+def get_recent_activity(session):
+    """Fetch recent notifications to identify names of voters/commenters."""
+    activity = []
+    try:
+        url = "https://www.wattpad.com/notifications?_data=routes/_updates.notifications"
+        resp = session.get(url, timeout=15, headers={'X-Remix-Redirect': 'true'})
+        if resp.status_code == 200:
+            data = resp.json()
+            items = data.get("notifications", {}).get("items", [])
+            for item in items:
+                ntype = item.get("type")
+                user = item.get("from", {}).get("username")
+                if user and ntype in ["VOTE", "COMMENT"]:
+                    activity.append({"user": user, "type": ntype})
+    except Exception as e:
+        print(f"Error fetching activity: {e}")
+    return activity
+
+def get_reader_engagement(session, story_id):
+    """Fetch unique readers and chapter retention / drop-off."""
+    engagement = {"readers_today": 0, "avg_readers": 0, "retention": []}
+    try:
+        # 1. Activities (Unique Readers)
+        act_url = f"https://www.wattpad.com/v4/stories/{story_id}/activities?interval=30"
+        resp = session.get(act_url, timeout=15)
+        if resp.status_code == 200:
+            data = resp.json()
+            for obj in data.get("analytics", []):
+                if obj.get("metric") == "readers":
+                    vals = obj.get("values", {})
+                    if vals:
+                        engagement["readers_today"] = list(vals.values())[-1]
+                        engagement["avg_readers"] = int(sum(vals.values()) / len(vals))
+        
+        # 2. Interactions (Retention)
+        int_url = f"https://www.wattpad.com/v4/stories/{story_id}/interactions?interval=30"
+        resp = session.get(int_url, timeout=15)
+        if resp.status_code == 200:
+            data = resp.json()
+            for obj in data.get("analytics", []):
+                if obj.get("metric") == "reading_dropoff":
+                    # This lists completion % for each part
+                    vals = obj.get("values", [])
+                    # We take the last 3-5 parts to show current retention health
+                    engagement["retention"] = [f"{round(v * 100)}%" for v in vals[-5:]]
+    except Exception as e:
+        print(f"Error fetching engagement: {e}")
+    return engagement
+
+def get_wattpad_rankings(session, current):
     """
     Scrape Wattpad rankings for each story using the authenticated session.
     Parses the window.__remixContext JSON object found in the rankings page.
     """
-    session = requests.Session()
-    session.headers.update({
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
-    })
-    
-    # Load cookies
-    for part in WATTPAD_COOKIES.split(';'):
-        if '=' in part:
-            k, v = part.split('=', 1)
-            session.cookies.set(k.strip(), v.strip())
-
     all_rankings = {}
 
     for title, stats in current.get("stories", {}).items():
@@ -249,6 +300,16 @@ def send_sms(message):
 
 def main():
     try:
+        session = requests.Session()
+        session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8'
+        })
+        for part in WATTPAD_COOKIES.split(';'):
+            if '=' in part:
+                k, v = part.split('=', 1)
+                session.cookies.set(k.strip(), v.strip())
+
         current = get_wattpad_stats(WATTPAD_USERNAME)
     except Exception as e:
         print(f"Error fetching Wattpad data: {e}")
@@ -263,11 +324,32 @@ def main():
             pass
 
     # Scrape fresh rankings; if that fails, fall back to last saved rankings
-    scraped_rankings = get_wattpad_rankings(current)
+    scraped_rankings = get_wattpad_rankings(session, current)
     if scraped_rankings:
         current["rankings"] = scraped_rankings
     else:
         current["rankings"] = previous.get("rankings", {})
+    
+    # New metrics: Retention and Engagement
+    engagement_stats = {}
+    recent_activity = get_recent_activity(session)
+    
+    for title, stats in current["stories"].items():
+        sid = stats.get("id")
+        if sid:
+            engagement_stats[title] = get_reader_engagement(session, sid)
+    
+    current["engagement"] = engagement_stats
+
+    # Dedup by user and type for activity
+    seen_act = set()
+    unique_activity = []
+    for a in recent_activity:
+        key = (a['user'], a['type'])
+        if key not in seen_act:
+            unique_activity.append(a)
+            seen_act.add(key)
+    
     prev_stories = previous.get("stories", {})
 
     # Key times: last chapter date, new parts since last run
@@ -318,10 +400,28 @@ def main():
         for story_title, ranks in current["rankings"].items():
             if isinstance(ranks, dict):
                 sms_text += f"{story_title}\n"
-                for cat, rank in list(ranks.items())[:5]:
+                # Show more rankings as requested
+                for cat, rank in list(ranks.items())[:15]:
                     sms_text += f"  {cat}: {rank}\n"
             else:
                 sms_text += f"{story_title}: {ranks}\n"
+
+    # Impactful Metrics Section
+    if engagement_stats or unique_activity:
+        sms_text += "---\nENGAGEMENT:\n"
+        for title, eng in engagement_stats.items():
+            sms_text += f"{title}:\n"
+            sms_text += f"  Readers: {eng['readers_today']} (Avg: {eng['avg_readers']})\n"
+            if eng['retention']:
+                sms_text += f"  Stayed: {', '.join(eng['retention'])}\n"
+        
+        if unique_activity:
+            voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
+            comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
+            if voters:
+                sms_text += f"Voters: {', '.join(voters[:5])}\n"
+            if comms:
+                sms_text += f"Comms: {', '.join(comms[:5])}\n"
 
     if story_lines:
         sms_text += "---\n"
