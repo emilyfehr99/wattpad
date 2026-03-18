@@ -1,14 +1,14 @@
 {
     "followers": 2,
-    "reads": 3056,
-    "votes": 189,
+    "reads": 3076,
+    "votes": 190,
     "comments": 12,
     "stories": {
         "Blue Lines, Red Flags": {
             "id": "407902208",
             "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
-            "reads": 3056,
-            "votes": 189,
+            "reads": 3076,
+            "votes": 190,
             "comments": 12,
             "parts": 54,
             "completed": true
@@ -43,5 +43,5 @@
             ]
         }
     },
-    "timestamp": "2026-03-18T03:04:31.465804"
+    "timestamp": "2026-03-18T03:39:31.780127"
 }
