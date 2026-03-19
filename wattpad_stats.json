@@ -1,15 +1,15 @@
 {
     "followers": 2,
-    "reads": 3076,
-    "votes": 190,
-    "comments": 12,
+    "reads": 3539,
+    "votes": 197,
+    "comments": 13,
     "stories": {
         "Blue Lines, Red Flags": {
             "id": "407902208",
             "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
-            "reads": 3076,
-            "votes": 190,
-            "comments": 12,
+            "reads": 3539,
+            "votes": 197,
+            "comments": 13,
             "parts": 54,
             "completed": true
         }
@@ -33,15 +33,15 @@
     "engagement": {
         "Blue Lines, Red Flags": {
             "readers_today": 0,
-            "avg_readers": 15,
+            "avg_readers": 16,
             "retention": [
-                "75%",
-                "72%",
-                "91%",
-                "72%",
-                "95%"
+                "78%",
+                "50%",
+                "50%",
+                "43%",
+                "50%"
             ]
         }
     },
-    "timestamp": "2026-03-18T03:39:31.780127"
+    "timestamp": "2026-03-19T03:39:52.821552"
 }
