@@ -56,6 +56,18 @@ async function createWidget() {
   folsLabel.font = Font.systemFont(10);
   folsLabel.textColor = Color.white();
 
+  statsStack.addSpacer(20);
+
+  // Engaged Readers Block
+  let engStack = statsStack.addStack();
+  engStack.layoutVertically();
+  let engVal = engStack.addText(formatNumber(data.engaged_readers || 0));
+  engVal.font = Font.boldSystemFont(20);
+  engVal.textColor = Color.white();
+  let engLabel = engStack.addText("ENGAGED");
+  engLabel.font = Font.systemFont(10);
+  engLabel.textColor = Color.white();
+
   widget.addSpacer(12);
 
   // Rankings Header
@@ -85,7 +97,7 @@ async function createWidget() {
   
   // Engagement
   const eng = data.engagement["Blue Lines, Red Flags"] || {};
-  let engLine = widget.addText(`Daily Readers: ${eng.readers_today || 0} (Avg: ${eng.avg_readers || 0})`);
+  let engLine = widget.addText(`Daily: ${eng.readers_today || 0} | Completion: ${eng.retention ? eng.retention[0] : 'N/A'}`);
   engLine.font = Font.italicSystemFont(10);
   engLine.textColor = Color.white();
 

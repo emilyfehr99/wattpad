@@ -27,59 +27,58 @@ SENDER_PASSWORD = "nyhuejmpcxpvruel"
 STATS_FILE = "wattpad_stats.json"
 
 
-def get_wattpad_stats(username):
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-
-    user_url = f"https://www.wattpad.com/api/v3/users/{username}?fields=numFollowers"
-    user_res = requests.get(user_url, headers=headers)
-    user_res.raise_for_status()
-    user_data = user_res.json()
-    followers = user_data.get('numFollowers', 0)
-
-    stories_url = f"https://www.wattpad.com/api/v3/users/{username}/stories"
-    stories_res = requests.get(stories_url, headers=headers)
-    stories_res.raise_for_status()
-    stories_data = stories_res.json()
-
-    total_reads = 0
-    total_votes = 0
-    total_comments = 0
-    story_stats = {}
-
-    if 'stories' in stories_data:
-        for story in stories_data['stories']:
-            if not isinstance(story, dict):
-                continue
-            title = story.get('title', 'Unknown')
-            story_id = story.get('id')
-            story_url = story.get('url')  # e.g. "/story/407902208-blue-lines-red-flags"
-            reads = story.get('readCount', 0)
-            votes = story.get('voteCount', 0)
-            comments = story.get('commentCount', 0)
-            parts = story.get('numParts', 0)
-            completed = story.get('completed', False)
-
-            total_reads += reads
-            total_votes += votes
-            total_comments += comments
-
-            story_stats[title] = {
-                "id": story_id,
-                "url": story_url,
-                "reads": reads,
-                "votes": votes,
-                "comments": comments,
-                "parts": parts,
-                "completed": completed
-            }
-
-    return {
-        "followers": followers,
-        "reads": total_reads,
-        "votes": total_votes,
-        "comments": total_comments,
-        "stories": story_stats
+def get_wattpad_stats(username, session=None):
+    """Fetch basic user and story stats via Wattpad's v3 API."""
+    stats = {
+        "followers": 0,
+        "reads": 0,
+        "votes": 0,
+        "comments": 0,
+        "stories": {},
+        "engaged_readers": 0 # qualifiedUniqueReaders
     }
+    
+    try:
+        # User stats
+        user_url = f"https://www.wattpad.com/api/v3/users/{username}"
+        r = session.get(user_url, timeout=10) if session else requests.get(user_url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            stats["followers"] = data.get("numFollowers", 0)
+
+        # Stories stats for user
+        # Note: qualifiedUniqueReaders requires authentication (session)
+        fields = "stories(id,title,readCount,voteCount,commentCount,numParts,completed,qualifiedUniqueReaders)"
+        stories_url = f"https://www.wattpad.com/api/v3/users/{username}/stories?fields={fields}&limit=15"
+        
+        r = session.get(stories_url, timeout=10) if session else requests.get(stories_url, timeout=10)
+        
+        if r.status_code == 200:
+            data = r.json()
+            for story in data.get("stories", []):
+                title = story.get("title")
+                stats["stories"][title] = {
+                    "id": story.get("id"),
+                    "reads": story.get("readCount", 0),
+                    "votes": story.get("voteCount", 0),
+                    "comments": story.get("commentCount", 0),
+                    "parts": story.get("numParts", 0),
+                    "completed": story.get("completed", False),
+                    "engaged": story.get("qualifiedUniqueReaders", 0)
+                }
+                # Track global totals
+                stats["reads"] += story.get("readCount", 0)
+                stats["votes"] += story.get("voteCount", 0)
+                stats["comments"] += story.get("commentCount", 0)
+                if story.get("qualifiedUniqueReaders"):
+                    stats["engaged_readers"] += story.get("qualifiedUniqueReaders", 0)
+        else:
+            print(f"Stories API error: {r.status_code} {r.text}")
+
+    except Exception as e:
+        print(f"Error fetching stats: {e}")
+    
+    return stats
 
 
 def fetch_story_parts(story_id, headers):
@@ -147,8 +146,9 @@ def get_followers_list(session):
     return followers
 
 def get_recent_activity(session):
-    """Fetch recent notifications to identify names of voters/commenters."""
+    """Fetch recent notifications and analyze timing."""
     activity = []
+    hourly_activity = {} # Map of hour (0-23) to count
     try:
         url = "https://www.wattpad.com/notifications?_data=routes/_updates.notifications"
         resp = session.get(url, timeout=15, headers={'X-Remix-Redirect': 'true'})
@@ -158,11 +158,26 @@ def get_recent_activity(session):
             for item in items:
                 ntype = item.get("type")
                 user = item.get("from", {}).get("username")
+                timestamp = item.get("createDate") # e.g. "2026-03-18T16:06:00Z"
+                
+                if timestamp:
+                    try:
+                        dt = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%SZ")
+                        # Adjust to local time (Assumed Central for user Emily)
+                        hour = (dt.hour - 5) % 24 
+                        hourly_activity[hour] = hourly_activity.get(hour, 0) + 1
+                    except: pass
+
                 if user and ntype in ["VOTE", "COMMENT"]:
                     activity.append({"user": user, "type": ntype})
     except Exception as e:
         print(f"Error fetching activity: {e}")
-    return activity
+    
+    peak_hour = None
+    if hourly_activity:
+        peak_hour = max(hourly_activity, key=hourly_activity.get)
+        
+    return activity, peak_hour
 
 def get_reader_engagement(session, story_id):
     """Fetch unique readers and chapter retention / drop-off."""
@@ -310,7 +325,7 @@ def main():
                 k, v = part.split('=', 1)
                 session.cookies.set(k.strip(), v.strip())
 
-        current = get_wattpad_stats(WATTPAD_USERNAME)
+        current = get_wattpad_stats(WATTPAD_USERNAME, session=session)
     except Exception as e:
         print(f"Error fetching Wattpad data: {e}")
         return
@@ -323,16 +338,16 @@ def main():
         except Exception:
             pass
 
-    # Scrape fresh rankings; if that fails, fall back to last saved rankings
+    # Scrape fresh rankings
     scraped_rankings = get_wattpad_rankings(session, current)
     if scraped_rankings:
         current["rankings"] = scraped_rankings
     else:
         current["rankings"] = previous.get("rankings", {})
     
-    # New metrics: Retention and Engagement
+    # New metrics: Retention, Engagement, Peaks
     engagement_stats = {}
-    recent_activity = get_recent_activity(session)
+    recent_activity, peak_hour = get_recent_activity(session)
     
     for title, stats in current["stories"].items():
         sid = stats.get("id")
@@ -341,7 +356,30 @@ def main():
     
     current["engagement"] = engagement_stats
 
-    # Dedup by user and type for activity
+    # Growth and Delta Calculations
+    def get_growth_str(curr, prev):
+        diff = curr - prev
+        pct = (diff / prev * 100) if prev > 0 else 0
+        sign = "+" if diff >= 0 else ""
+        return f"{sign}{diff} | {pct:.1f}%"
+
+    prev_reads = previous.get("reads", current["reads"])
+    prev_votes = previous.get("votes", current["votes"])
+    prev_engaged = previous.get("engaged_readers", current.get("engaged_readers", 0))
+    prev_fols = previous.get("followers", current["followers"])
+
+    now_str = datetime.now().strftime("%m/%d %H:%M")
+    sms_text = f"Wattpad Update ({now_str}):\n"
+    sms_text += f"Reads: {current['reads']} ({get_growth_str(current['reads'], prev_reads)})\n"
+    sms_text += f"Votes: {current['votes']} ({get_growth_str(current['votes'], prev_votes)})\n"
+    sms_text += f"Engaged: {current['engaged_readers']} ({get_growth_str(current['engaged_readers'], prev_engaged)})\n"
+    sms_text += f"Followers: {current['followers']} (+{current['followers'] - prev_fols})\n"
+    
+    if peak_hour is not None:
+        p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
+        sms_text += f"PEAK ACTIVITY: {p_str}\n"
+
+    # Dedup by user and type for display
     seen_act = set()
     unique_activity = []
     for a in recent_activity:
@@ -351,69 +389,44 @@ def main():
             seen_act.add(key)
     
     prev_stories = previous.get("stories", {})
+    prev_rankings = previous.get("rankings", {})
 
-    # Key times: last chapter date, new parts since last run
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-    key_times_lines = []
+    # Story specific summaries
+    story_summary_lines = []
     for title, stats in current["stories"].items():
-        parts_with_dates = fetch_story_parts(stats.get("id"), headers)
-        prev_part_count = prev_stories.get(title, {}).get("parts") if title in prev_stories else None
-        line = format_key_times(title, parts_with_dates, prev_part_count)
-        if line:
-            key_times_lines.append(f"{title}: {line}")
-
-    new_followers = current["followers"] - previous.get("followers", current["followers"])
-    new_reads = current["reads"] - previous.get("reads", current["reads"])
-    new_votes = current["votes"] - previous.get("votes", current["votes"])
-    new_comments = current["comments"] - previous.get("comments", current["comments"])
-
-    story_lines = []
-    for title, stats in current["stories"].items():
-        prev_s = prev_stories.get(title, stats)
+        prev_s = prev_stories.get(title, {})
         d_reads = stats["reads"] - prev_s.get("reads", stats["reads"])
-        d_comments = stats["comments"] - prev_s.get("comments", stats["comments"])
-
-        parts_info = f"({stats['parts']} Pts)"
-        completion_info = " [Done!]" if stats['completed'] else ""
-        line = f"{title}: {parts_info}{completion_info}"
-        updates = []
-        if d_reads > 0:
-            updates.append(f"+{d_reads}R")
-        if d_comments > 0:
-            updates.append(f"+{d_comments}C")
-        if updates:
-            line += " " + ", ".join(updates)
-        story_lines.append(line)
-
-    dt_now = datetime.now().strftime("%m/%d %H:%M")
-    sms_text = f"Wattpad Update ({dt_now}):\n"
-    sms_text += f"GAINS: +{new_reads}R, +{new_votes}V, +{new_comments}C, +{new_followers}Fol\n"
-    sms_text += f"---\n"
-    sms_text += f"TOTAL: {current['reads']}R, {current['followers']}Fol\n"
-
-    if key_times_lines:
-        sms_text += "---\nKEY TIMES:\n"
-        sms_text += "\n".join(key_times_lines) + "\n"
+        d_votes = stats["votes"] - prev_s.get("votes", stats["votes"])
+        line = f"{title}: +{d_reads}R, +{d_votes}V"
+        if prev_s and stats["parts"] > prev_s.get("parts", 0):
+            line += " | NEW CH!"
+        story_summary_lines.append(line)
 
     if current.get("rankings"):
-        sms_text += "---\nTODAY'S RANKS:\n"
+        sms_text += "---\nRANKS (+/-):\n"
         for story_title, ranks in current["rankings"].items():
+            prev_story_ranks = prev_rankings.get(story_title, {})
             if isinstance(ranks, dict):
                 sms_text += f"{story_title}\n"
-                # Show more rankings as requested
                 for cat, rank in list(ranks.items())[:15]:
-                    sms_text += f"  {cat}: {rank}\n"
-            else:
-                sms_text += f"{story_title}: {ranks}\n"
+                    curr_val = int(rank.strip('#'))
+                    prev_val_str = prev_story_ranks.get(cat, "").strip('#')
+                    delta_str = ""
+                    if prev_val_str:
+                        prev_val = int(prev_val_str)
+                        delta = prev_val - curr_val
+                        if delta > 0: delta_str = f" (+{delta})"
+                        elif delta < 0: delta_str = f" ({delta})"
+                    sms_text += f"  {cat}: {rank}{delta_str}\n"
 
     # Impactful Metrics Section
     if engagement_stats or unique_activity:
-        sms_text += "---\nENGAGEMENT:\n"
+        sms_text += "---\nREADER INSIGHTS:\n"
         for title, eng in engagement_stats.items():
             sms_text += f"{title}:\n"
-            sms_text += f"  Readers: {eng['readers_today']} (Avg: {eng['avg_readers']})\n"
+            sms_text += f"  Daily Readers: {eng['readers_today']}\n"
             if eng['retention']:
-                sms_text += f"  Stayed: {', '.join(eng['retention'])}\n"
+                sms_text += f"  Completion: {', '.join(eng['retention'])}\n"
         
         if unique_activity:
             voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
@@ -423,9 +436,8 @@ def main():
             if comms:
                 sms_text += f"Comms: {', '.join(comms[:5])}\n"
 
-    if story_lines:
-        sms_text += "---\n"
-        sms_text += "\n".join(story_lines)
+    if story_summary_lines:
+        sms_text += "---\n" + "\n".join(story_summary_lines)
 
     print("Sending Notification:")
     print(sms_text)

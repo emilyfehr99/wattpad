@@ -1,19 +1,38 @@
 {
-    "followers": 2,
-    "reads": 3539,
+    "followers": 3,
+    "reads": 3594,
     "votes": 197,
     "comments": 13,
     "stories": {
+        "Offside With You": {
+            "id": "408937854",
+            "reads": 2,
+            "votes": 0,
+            "comments": 0,
+            "parts": 32,
+            "completed": false,
+            "engaged": 1
+        },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "url": "https://www.wattpad.com/story/407902208-blue-lines-red-flags",
-            "reads": 3539,
+            "reads": 3591,
             "votes": 197,
             "comments": 13,
             "parts": 54,
-            "completed": true
+            "completed": true,
+            "engaged": 87
+        },
+        "Cold Season": {
+            "id": "407749887",
+            "reads": 1,
+            "votes": 0,
+            "comments": 0,
+            "parts": 21,
+            "completed": false,
+            "engaged": null
         }
     },
+    "engaged_readers": 88,
     "rankings": {
         "Blue Lines, Red Flags": {
             "youngadult": "#147",
@@ -31,17 +50,27 @@
         }
     },
     "engagement": {
-        "Blue Lines, Red Flags": {
+        "Offside With You": {
             "readers_today": 0,
-            "avg_readers": 16,
+            "avg_readers": 0,
+            "retention": []
+        },
+        "Blue Lines, Red Flags": {
+            "readers_today": 48,
+            "avg_readers": 18,
             "retention": [
-                "78%",
-                "50%",
-                "50%",
-                "43%",
-                "50%"
+                "56%",
+                "59%",
+                "68%",
+                "93%",
+                "39%"
             ]
+        },
+        "Cold Season": {
+            "readers_today": 0,
+            "avg_readers": 0,
+            "retention": []
         }
     },
-    "timestamp": "2026-03-19T03:39:52.821552"
+    "timestamp": "2026-03-19T10:07:00.724537"
 }
