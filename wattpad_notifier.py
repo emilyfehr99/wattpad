@@ -393,40 +393,42 @@ def main():
 
     # Story specific summaries
     story_summary_lines = []
-    for title, stats in current["stories"].items():
-        prev_s = prev_stories.get(title, {})
+    target_story = "Blue Lines, Red Flags"
+    
+    if target_story in current["stories"]:
+        stats = current["stories"][target_story]
+        prev_s = prev_stories.get(target_story, {})
         d_reads = stats["reads"] - prev_s.get("reads", stats["reads"])
         d_votes = stats["votes"] - prev_s.get("votes", stats["votes"])
-        line = f"{title}: +{d_reads}R, +{d_votes}V"
+        line = f"{target_story}: +{d_reads}R, +{d_votes}V"
         if prev_s and stats["parts"] > prev_s.get("parts", 0):
             line += " | NEW CH!"
         story_summary_lines.append(line)
 
-    if current.get("rankings"):
+    if current.get("rankings") and target_story in current["rankings"]:
         sms_text += "---\nRANKS (+/-):\n"
-        for story_title, ranks in current["rankings"].items():
-            prev_story_ranks = prev_rankings.get(story_title, {})
-            if isinstance(ranks, dict):
-                sms_text += f"{story_title}\n"
-                for cat, rank in list(ranks.items())[:15]:
-                    curr_val = int(rank.strip('#'))
-                    prev_val_str = prev_story_ranks.get(cat, "").strip('#')
-                    delta_str = ""
-                    if prev_val_str:
-                        prev_val = int(prev_val_str)
-                        delta = prev_val - curr_val
-                        if delta > 0: delta_str = f" (+{delta})"
-                        elif delta < 0: delta_str = f" ({delta})"
-                    sms_text += f"  {cat}: {rank}{delta_str}\n"
+        ranks = current["rankings"][target_story]
+        prev_story_ranks = prev_rankings.get(target_story, {})
+        if isinstance(ranks, dict):
+            sms_text += f"{target_story}\n"
+            for cat, rank in list(ranks.items())[:15]:
+                curr_val = int(rank.strip('#'))
+                prev_val_str = prev_story_ranks.get(cat, "").strip('#')
+                delta_str = ""
+                if prev_val_str:
+                    prev_val = int(prev_val_str)
+                    delta = prev_val - curr_val
+                    if delta > 0: delta_str = f" (+{delta})"
+                    elif delta < 0: delta_str = f" ({delta})"
+                sms_text += f"  {cat}: {rank}{delta_str}\n"
 
     # Impactful Metrics Section
-    if engagement_stats or unique_activity:
+    if (target_story in engagement_stats) or unique_activity:
         sms_text += "---\nREADER INSIGHTS:\n"
-        for title, eng in engagement_stats.items():
-            sms_text += f"{title}:\n"
+        if target_story in engagement_stats:
+            eng = engagement_stats[target_story]
+            sms_text += f"{target_story}:\n"
             sms_text += f"  Daily Readers: {eng['readers_today']}\n"
-            if eng['retention']:
-                sms_text += f"  Completion: {', '.join(eng['retention'])}\n"
         
         if unique_activity:
             voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
