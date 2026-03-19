@@ -4,8 +4,8 @@ env:
 
 on:
   schedule:
-    # 7 PM Central (CDT) = 1:00 AM UTC
-    - cron: '0 1 * * *'
+    # Runs every 6 hours (1 AM, 7 AM, 1 PM, 7 PM UTC)
+    - cron: '0 1,7,13,19 * * *'
   workflow_dispatch: {}
 
 permissions:
