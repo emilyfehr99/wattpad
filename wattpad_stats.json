@@ -1,6 +1,6 @@
 {
     "followers": 3,
-    "reads": 3594,
+    "reads": 3821,
     "votes": 197,
     "comments": 13,
     "stories": {
@@ -15,7 +15,7 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 3591,
+            "reads": 3818,
             "votes": 197,
             "comments": 13,
             "parts": 54,
@@ -35,18 +35,16 @@
     "engaged_readers": 88,
     "rankings": {
         "Blue Lines, Red Flags": {
-            "youngadult": "#147",
-            "sports": "#39",
-            "lesbianfiction": "#17",
-            "gaylove": "#111",
+            "lesbianromance": "#2",
+            "youngadult": "#158",
+            "sports": "#38",
+            "gaylove": "#105",
             "lgbtfiction": "#53",
-            "gayromance": "#64",
-            "lesbianromance": "#98",
-            "slowburn": "#627",
-            "hockey": "#48",
-            "carolineharvey": "#3",
-            "wlwbook": "#34",
-            "lesbian": "#930"
+            "gayromance": "#56",
+            "hockey": "#37",
+            "carolineharvey": "#2",
+            "wlwbook": "#20",
+            "lesbian": "#734"
         }
     },
     "engagement": {
@@ -56,7 +54,7 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 48,
+            "readers_today": 0,
             "avg_readers": 18,
             "retention": [
                 "56%",
@@ -72,5 +70,5 @@
             "retention": []
         }
     },
-    "timestamp": "2026-03-19T10:07:00.724537"
+    "timestamp": "2026-03-20T03:24:56.701548"
 }
