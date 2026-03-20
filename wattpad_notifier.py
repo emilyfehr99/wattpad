@@ -192,8 +192,38 @@ def get_reader_engagement(session, story_id):
                 if obj.get("metric") == "readers":
                     vals = obj.get("values", {})
                     if vals:
-                        engagement["readers_today"] = list(vals.values())[-1]
-                        engagement["avg_readers"] = int(sum(vals.values()) / len(vals))
+                        # `vals` is usually a time series; we want today's readers as the
+                        # most recent non-zero bucket to avoid transient 0s near send time.
+                        items = list(vals.items())
+
+                        def _parse_ts(key):
+                            # Keys are often either epoch (seconds/ms) or ISO timestamps.
+                            try:
+                                if isinstance(key, (int, float)) or (isinstance(key, str) and key.isdigit()):
+                                    num = float(key)
+                                    # Heuristic: ms vs seconds.
+                                    if num > 1e11:
+                                        num = num / 1000.0
+                                    return datetime.utcfromtimestamp(num)
+                                if isinstance(key, str):
+                                    return datetime.fromisoformat(key.replace("Z", "+00:00"))
+                            except Exception:
+                                return None
+                            return None
+
+                        parsed = [(k, v, _parse_ts(k)) for k, v in items]
+                        # If at least one timestamp parses, sort by time; otherwise preserve order.
+                        if any(p[2] is not None for p in parsed):
+                            parsed.sort(key=lambda x: x[2] or datetime.min)
+                        values_list = [int(v) for _, v, _ in parsed if v is not None]
+                        if values_list:
+                            readers_today = 0
+                            for v in reversed(values_list):
+                                if v != 0:
+                                    readers_today = v
+                                    break
+                            engagement["readers_today"] = readers_today
+                            engagement["avg_readers"] = int(sum(values_list) / len(values_list))
         
         # 2. Interactions (Retention)
         int_url = f"https://www.wattpad.com/v4/stories/{story_id}/interactions?interval=30"
@@ -204,7 +234,7 @@ def get_reader_engagement(session, story_id):
                 if obj.get("metric") == "reading_dropoff":
                     # This lists completion % for each part
                     vals = obj.get("values", [])
-                    # We take the last 3-5 parts to show current retention health
+                    # We take the last 3-5 parts
                     engagement["retention"] = [f"{round(v * 100)}%" for v in vals[-5:]]
     except Exception as e:
         print(f"Error fetching engagement: {e}")
@@ -368,12 +398,57 @@ def main():
     prev_engaged = previous.get("engaged_readers", current.get("engaged_readers", 0))
     prev_fols = previous.get("followers", current["followers"])
 
+    # Historical Tracking (Keep last 7 entries)
+    history = previous.get("history", [])
+    history.append({
+        "date": datetime.now().strftime("%Y-%m-%d"),
+        "reads": current["reads"],
+        "votes": current["votes"],
+        "comments": current["comments"]
+    })
+    # Keep only the most recent 8 (to calculate 7 deltas)
+    if len(history) > 8:
+        history = history[-8:]
+    current["history"] = history
+
+    # Sunday Weekly Summary
+    sunday_summary = ""
+    is_sunday = datetime.now().weekday() == 6
+    if is_sunday and len(history) >= 2:
+        top_day = None
+        # Gains can be negative (API corrections), so start at -inf to ensure we pick something.
+        top_gain = float("-inf")
+        for i in range(1, len(history)):
+            prev_h = history[i-1]
+            curr_h = history[i]
+            gains = (curr_h["reads"] - prev_h["reads"]) + \
+                    (curr_h["votes"] - prev_h["votes"]) + \
+                    (curr_h["comments"] - prev_h["comments"])
+            if gains > top_gain:
+                top_gain = gains
+                top_day = curr_h["date"]
+        
+        if top_day:
+            sunday_summary = f"---\nWEEKLY SUMMARY:\nTOP DAY: {top_day} (+{top_gain} gains)\n"
+    elif is_sunday:
+        # If history is missing/too short (e.g. first run, older stats file),
+        # still show a TOP DAY based on today's delta vs the last saved totals.
+        today_date = datetime.now().strftime("%Y-%m-%d")
+        prev_reads = previous.get("reads", current["reads"])
+        prev_votes = previous.get("votes", current["votes"])
+        prev_comments = previous.get("comments", current["comments"])
+        gains_today = (current["reads"] - prev_reads) + (current["votes"] - prev_votes) + (current["comments"] - prev_comments)
+        sunday_summary = f"---\nWEEKLY SUMMARY:\nTOP DAY: {today_date} (+{gains_today} gains)\n"
+
     now_str = datetime.now().strftime("%m/%d %H:%M")
     sms_text = f"Wattpad Update ({now_str}):\n"
     sms_text += f"Reads: {current['reads']} ({get_growth_str(current['reads'], prev_reads)})\n"
     sms_text += f"Votes: {current['votes']} ({get_growth_str(current['votes'], prev_votes)})\n"
     sms_text += f"Engaged: {current['engaged_readers']} ({get_growth_str(current['engaged_readers'], prev_engaged)})\n"
     sms_text += f"Followers: {current['followers']} (+{current['followers'] - prev_fols})\n"
+    
+    if sunday_summary:
+        sms_text += sunday_summary
     
     if peak_hour is not None:
         p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
