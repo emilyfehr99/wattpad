@@ -1,6 +1,6 @@
 {
-    "followers": 3,
-    "reads": 3821,
+    "followers": 4,
+    "reads": 4389,
     "votes": 197,
     "comments": 13,
     "stories": {
@@ -9,18 +9,18 @@
             "reads": 2,
             "votes": 0,
             "comments": 0,
-            "parts": 32,
+            "parts": 34,
             "completed": false,
             "engaged": 1
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 3818,
+            "reads": 4386,
             "votes": 197,
             "comments": 13,
             "parts": 54,
             "completed": true,
-            "engaged": 87
+            "engaged": 93
         },
         "Cold Season": {
             "id": "407749887",
@@ -32,19 +32,19 @@
             "engaged": null
         }
     },
-    "engaged_readers": 88,
+    "engaged_readers": 94,
     "rankings": {
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#2",
-            "youngadult": "#158",
-            "sports": "#38",
-            "gaylove": "#105",
-            "lgbtfiction": "#53",
-            "gayromance": "#56",
-            "hockey": "#37",
-            "carolineharvey": "#2",
-            "wlwbook": "#20",
-            "lesbian": "#734"
+            "lesbianromance": "#8",
+            "gaylove": "#118",
+            "sports": "#162",
+            "lgbtfiction": "#191",
+            "youngadult": "#752",
+            "gayromance": "#184",
+            "hockey": "#115",
+            "carolineharvey": "#3",
+            "wlwbook": "#31",
+            "lesbian": "#848"
         }
     },
     "engagement": {
@@ -54,14 +54,14 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 0,
-            "avg_readers": 18,
+            "readers_today": 32,
+            "avg_readers": 19,
             "retention": [
                 "56%",
-                "59%",
-                "68%",
-                "93%",
-                "39%"
+                "63%",
+                "67%",
+                "92%",
+                "35%"
             ]
         },
         "Cold Season": {
@@ -70,5 +70,13 @@
             "retention": []
         }
     },
-    "timestamp": "2026-03-20T03:24:56.701548"
+    "history": [
+        {
+            "date": "2026-03-21",
+            "reads": 4389,
+            "votes": 197,
+            "comments": 13
+        }
+    ],
+    "timestamp": "2026-03-21T03:13:10.082865"
 }
