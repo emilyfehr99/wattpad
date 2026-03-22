@@ -1,7 +1,7 @@
 {
     "followers": 4,
-    "reads": 4389,
-    "votes": 197,
+    "reads": 4845,
+    "votes": 199,
     "comments": 13,
     "stories": {
         "Offside With You": {
@@ -15,12 +15,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 4386,
-            "votes": 197,
+            "reads": 4842,
+            "votes": 199,
             "comments": 13,
             "parts": 54,
             "completed": true,
-            "engaged": 93
+            "engaged": 113
         },
         "Cold Season": {
             "id": "407749887",
@@ -32,19 +32,19 @@
             "engaged": null
         }
     },
-    "engaged_readers": 94,
+    "engaged_readers": 114,
     "rankings": {
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#8",
-            "gaylove": "#118",
+            "lesbianromance": "#3",
+            "gaylove": "#291",
             "sports": "#162",
-            "lgbtfiction": "#191",
-            "youngadult": "#752",
-            "gayromance": "#184",
-            "hockey": "#115",
-            "carolineharvey": "#3",
-            "wlwbook": "#31",
-            "lesbian": "#848"
+            "gayromance": "#177",
+            "youngadult": "#807",
+            "lgbtfiction": "#222",
+            "hockey": "#121",
+            "carolineharvey": "#2",
+            "wlwbook": "#28",
+            "lesbian": "#714"
         }
     },
     "engagement": {
@@ -54,14 +54,14 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 32,
-            "avg_readers": 19,
+            "readers_today": 43,
+            "avg_readers": 20,
             "retention": [
-                "56%",
-                "63%",
+                "55%",
+                "59%",
                 "67%",
-                "92%",
-                "35%"
+                "88%",
+                "38%"
             ]
         },
         "Cold Season": {
@@ -76,7 +76,13 @@
             "reads": 4389,
             "votes": 197,
             "comments": 13
+        },
+        {
+            "date": "2026-03-22",
+            "reads": 4845,
+            "votes": 199,
+            "comments": 13
         }
     ],
-    "timestamp": "2026-03-21T03:13:10.082865"
+    "timestamp": "2026-03-22T03:33:31.370810"
 }
