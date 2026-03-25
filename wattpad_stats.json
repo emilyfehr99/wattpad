@@ -1,9 +1,18 @@
 {
     "followers": 5,
-    "reads": 6954,
+    "reads": 7163,
     "votes": 208,
     "comments": 13,
     "stories": {
+        "Founder": {
+            "id": "409366155",
+            "reads": 0,
+            "votes": 0,
+            "comments": 0,
+            "parts": 2,
+            "completed": false,
+            "engaged": null
+        },
         "Offside With You": {
             "id": "408937854",
             "reads": 2,
@@ -15,7 +24,7 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 6951,
+            "reads": 7160,
             "votes": 208,
             "comments": 13,
             "parts": 54,
@@ -51,6 +60,11 @@
         }
     },
     "engagement": {
+        "Founder": {
+            "readers_today": 0,
+            "avg_readers": 0,
+            "retention": []
+        },
         "Offside With You": {
             "readers_today": 0,
             "avg_readers": 0,
@@ -103,7 +117,13 @@
             "reads": 6954,
             "votes": 208,
             "comments": 13
+        },
+        {
+            "date": "2026-03-25",
+            "reads": 7163,
+            "votes": 208,
+            "comments": 13
         }
     ],
-    "timestamp": "2026-03-24T23:20:04.774866"
+    "timestamp": "2026-03-25T04:02:33.341072"
 }
