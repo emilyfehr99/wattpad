@@ -1,6 +1,6 @@
 {
-    "followers": 5,
-    "reads": 7948,
+    "followers": 7,
+    "reads": 8887,
     "votes": 208,
     "comments": 13,
     "stories": {
@@ -24,12 +24,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 7945,
+            "reads": 8884,
             "votes": 208,
             "comments": 13,
             "parts": 54,
             "completed": true,
-            "engaged": 186
+            "engaged": 200
         },
         "Cold Season": {
             "id": "407749887",
@@ -41,22 +41,22 @@
             "engaged": null
         }
     },
-    "engaged_readers": 187,
+    "engaged_readers": 201,
     "rankings": {
         "Blue Lines, Red Flags": {
             "lesbianromance": "#3",
-            "slowburn": "#50",
-            "gaylove": "#110",
-            "gayromance": "#94",
-            "sports": "#165",
-            "lgbtfiction": "#196",
-            "youngadult": "#789",
-            "hockey": "#119",
-            "lesbian": "#17",
-            "wlw": "#26",
-            "lgbt": "#30",
+            "slowburn": "#96",
+            "gaylove": "#101",
+            "gayromance": "#54",
+            "lgbtfiction": "#192",
+            "youngadult": "#752",
+            "sports": "#177",
+            "lesbian": "#13",
+            "hockey": "#125",
+            "wlw": "#22",
+            "lgbt": "#26",
             "carolineharvey": "#1",
-            "wlwbook": "#31"
+            "wlwbook": "#30"
         }
     },
     "engagement": {
@@ -71,13 +71,13 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 75,
-            "avg_readers": 28,
+            "readers_today": 59,
+            "avg_readers": 30,
             "retention": [
-                "58%",
-                "63%",
-                "70%",
-                "90%",
+                "57%",
+                "62%",
+                "67%",
+                "89%",
                 "38%"
             ]
         },
@@ -129,7 +129,13 @@
             "reads": 7948,
             "votes": 208,
             "comments": 13
+        },
+        {
+            "date": "2026-03-27",
+            "reads": 8887,
+            "votes": 208,
+            "comments": 13
         }
     ],
-    "timestamp": "2026-03-26T04:15:59.523232"
+    "timestamp": "2026-03-27T04:16:48.624382"
 }
