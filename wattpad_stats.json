@@ -1,6 +1,6 @@
 {
     "followers": 8,
-    "reads": 10133,
+    "reads": 10165,
     "votes": 217,
     "comments": 13,
     "stories": {
@@ -24,7 +24,7 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 10130,
+            "reads": 10162,
             "votes": 217,
             "comments": 13,
             "parts": 54,
@@ -90,12 +90,6 @@
     "history": [
         {
             "date": "2026-03-24",
-            "reads": 6234,
-            "votes": 207,
-            "comments": 13
-        },
-        {
-            "date": "2026-03-24",
             "reads": 6954,
             "votes": 208,
             "comments": 13
@@ -135,7 +129,13 @@
             "reads": 10133,
             "votes": 217,
             "comments": 13
+        },
+        {
+            "date": "2026-03-29",
+            "reads": 10165,
+            "votes": 217,
+            "comments": 13
         }
     ],
-    "timestamp": "2026-03-29T03:21:31.720531"
+    "timestamp": "2026-03-29T04:21:05.750870"
 }
