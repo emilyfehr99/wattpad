@@ -1,9 +1,18 @@
 {
-    "followers": 8,
-    "reads": 10165,
-    "votes": 217,
-    "comments": 13,
+    "followers": 9,
+    "reads": 10913,
+    "votes": 241,
+    "comments": 14,
     "stories": {
+        "Offside With You": {
+            "id": "408937854",
+            "reads": 12,
+            "votes": 1,
+            "comments": 0,
+            "parts": 34,
+            "completed": false,
+            "engaged": 1
+        },
         "Founder": {
             "id": "409366155",
             "reads": 0,
@@ -13,23 +22,14 @@
             "completed": false,
             "engaged": null
         },
-        "Offside With You": {
-            "id": "408937854",
-            "reads": 2,
-            "votes": 0,
-            "comments": 0,
-            "parts": 34,
-            "completed": false,
-            "engaged": 1
-        },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 10162,
-            "votes": 217,
-            "comments": 13,
+            "reads": 10900,
+            "votes": 240,
+            "comments": 14,
             "parts": 54,
             "completed": true,
-            "engaged": 239
+            "engaged": 251
         },
         "Cold Season": {
             "id": "407749887",
@@ -41,44 +41,44 @@
             "engaged": null
         }
     },
-    "engaged_readers": 240,
+    "engaged_readers": 252,
     "rankings": {
         "Blue Lines, Red Flags": {
             "lesbianromance": "#2",
-            "slowburn": "#88",
+            "slowburn": "#92",
+            "gayromance": "#47",
             "gaylove": "#115",
-            "gayromance": "#48",
-            "lgbtfiction": "#69",
-            "youngadult": "#385",
-            "sports": "#153",
-            "hockey": "#110",
+            "lgbtfiction": "#55",
+            "youngadult": "#210",
+            "sports": "#149",
+            "hockey": "#113",
             "carolineharvey": "#1",
-            "lesbian": "#412",
+            "lesbian": "#416",
             "wlwbook": "#32",
-            "wlw": "#647",
-            "lgbt": "#732"
+            "wlw": "#659",
+            "lgbt": "#727"
         }
     },
     "engagement": {
-        "Founder": {
-            "readers_today": 0,
-            "avg_readers": 0,
-            "retention": []
-        },
         "Offside With You": {
             "readers_today": 0,
             "avg_readers": 0,
             "retention": []
         },
+        "Founder": {
+            "readers_today": 0,
+            "avg_readers": 0,
+            "retention": []
+        },
         "Blue Lines, Red Flags": {
-            "readers_today": 53,
-            "avg_readers": 33,
+            "readers_today": 57,
+            "avg_readers": 34,
             "retention": [
-                "58%",
+                "59%",
                 "63%",
-                "65%",
-                "86%",
-                "38%"
+                "63%",
+                "87%",
+                "36%"
             ]
         },
         "Cold Season": {
@@ -88,12 +88,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-03-24",
-            "reads": 6954,
-            "votes": 208,
-            "comments": 13
-        },
         {
             "date": "2026-03-25",
             "reads": 7163,
@@ -135,7 +129,13 @@
             "reads": 10165,
             "votes": 217,
             "comments": 13
+        },
+        {
+            "date": "2026-03-30",
+            "reads": 10913,
+            "votes": 241,
+            "comments": 14
         }
     ],
-    "timestamp": "2026-03-29T04:21:05.750870"
+    "timestamp": "2026-03-30T04:27:54.583694"
 }
