@@ -1,17 +1,26 @@
 {
     "followers": 9,
-    "reads": 12577,
-    "votes": 304,
+    "reads": 12836,
+    "votes": 316,
     "comments": 14,
     "stories": {
         "Offside With You": {
             "id": "408937854",
-            "reads": 99,
+            "reads": 128,
             "votes": 24,
             "comments": 0,
             "parts": 34,
             "completed": false,
-            "engaged": 4
+            "engaged": 6
+        },
+        "Blue Lines, Red Flags": {
+            "id": "407902208",
+            "reads": 12707,
+            "votes": 292,
+            "comments": 14,
+            "parts": 54,
+            "completed": true,
+            "engaged": 292
         },
         "Founder": {
             "id": "409366155",
@@ -20,17 +29,7 @@
             "comments": 0,
             "parts": 5,
             "completed": false,
-            "engaged": null,
-            "draft": true
-        },
-        "Blue Lines, Red Flags": {
-            "id": "407902208",
-            "reads": 12477,
-            "votes": 280,
-            "comments": 14,
-            "parts": 54,
-            "completed": true,
-            "engaged": 286
+            "engaged": null
         },
         "Cold Season": {
             "id": "407749887",
@@ -39,63 +38,63 @@
             "comments": 0,
             "parts": 21,
             "completed": false,
-            "engaged": null,
-            "draft": true
+            "engaged": null
         }
     },
-    "engaged_readers": 290,
+    "engaged_readers": 298,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#35",
-            "gayfiction": "#55",
-            "sports": "#87",
-            "lgbtfiction": "#150",
-            "womanxwoman": "#37",
-            "hockey": "#76"
+            "young_adult": "#34",
+            "gayfiction": "#45",
+            "sports": "#78",
+            "lgbtfiction": "#130",
+            "hockey": "#47",
+            "slowburn": "#774",
+            "womanxwoman": "#41"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#5",
-            "slowburn": "#99",
-            "youngadult": "#164",
-            "gayromance": "#40",
-            "lgbtfiction": "#47",
-            "gaylove": "#106",
-            "sports": "#132",
-            "hockey": "#107",
+            "lesbianromance": "#2",
+            "slowburn": "#84",
+            "youngadult": "#180",
+            "gaylove": "#112",
+            "lgbtfiction": "#54",
+            "gayromance": "#52",
+            "sports": "#108",
+            "hockey": "#115",
             "carolineharvey": "#1",
-            "lesbian": "#411",
-            "wlwbook": "#37",
-            "wlw": "#632",
-            "lgbt": "#722"
+            "lesbian": "#463",
+            "wlwbook": "#34",
+            "wlw": "#687",
+            "lgbt": "#797"
         }
     },
     "engagement": {
         "Offside With You": {
-            "readers_today": 3,
+            "readers_today": 6,
             "avg_readers": 0,
             "retention": [
-                "67%",
-                "50%",
-                "50%",
-                "67%",
-                "50%"
+                "80%",
+                "86%",
+                "83%",
+                "100%",
+                "100%"
+            ]
+        },
+        "Blue Lines, Red Flags": {
+            "readers_today": 32,
+            "avg_readers": 39,
+            "retention": [
+                "55%",
+                "63%",
+                "60%",
+                "83%",
+                "37%"
             ]
         },
         "Founder": {
             "readers_today": 0,
             "avg_readers": 0,
             "retention": []
-        },
-        "Blue Lines, Red Flags": {
-            "readers_today": 42,
-            "avg_readers": 38,
-            "retention": [
-                "56%",
-                "64%",
-                "61%",
-                "84%",
-                "37%"
-            ]
         },
         "Cold Season": {
             "readers_today": 0,
@@ -104,12 +103,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-03-28",
-            "reads": 9636,
-            "votes": 217,
-            "comments": 13
-        },
         {
             "date": "2026-03-28",
             "reads": 9638,
@@ -151,7 +144,13 @@
             "reads": 12577,
             "votes": 304,
             "comments": 14
+        },
+        {
+            "date": "2026-04-02",
+            "reads": 12836,
+            "votes": 316,
+            "comments": 14
         }
     ],
-    "timestamp": "2026-04-02T04:11:10.924511"
+    "timestamp": "2026-04-02T21:24:09.233607"
 }
