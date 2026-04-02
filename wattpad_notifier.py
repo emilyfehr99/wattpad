@@ -433,29 +433,36 @@ def main():
     now_str = datetime.now().strftime("%m/%d %H:%M")
     sms_text = f"📚 Wattpad Update ({now_str}):\n"
     
-    # OVERALL PERFORMANCE
-    sms_text += f"---\n📊 OVERALL STATS:\n"
-    sms_text += f"Reads: {current['reads']} ({get_growth_str(current['reads'], prev_reads)})\n"
-    sms_text += f"Votes: {current['votes']} ({get_growth_str(current['votes'], prev_votes)})\n"
-    sms_text += f"Engaged: {current['engaged_readers']} ({get_growth_str(current['engaged_readers'], prev_engaged)})\n"
+    # ACCOUNT STATS
+    sms_text += f"---\n👤 ACCOUNT: {WATTPAD_USERNAME}\n"
     sms_text += f"Followers: {current['followers']} (+{current['followers'] - prev_fols})\n"
     
-    # INDIVIDUAL STORY REPORTS (Split Up)
+    # 🏆 INDIVIDUAL STORY REPORTS (Split Up with Full Totals)
     prev_rankings = previous.get("rankings", {})
     for title, stats in published_stories.items():
         sms_text += f"\n📕 {title.upper()}:\n"
-        prev_s = prev_stories.get(title, {})
-        d_reads = stats["reads"] - prev_s.get("reads", stats["reads"])
-        d_votes = stats["votes"] - prev_s.get("votes", stats["votes"])
-        sms_text += f"  Growth: +{d_reads}R, +{d_votes}V"
-        if prev_s and stats["parts"] > prev_s.get("parts", 0):
-            sms_text += " | NEW CH!"
-        sms_text += "\n"
         
-        # Rankings
+        # Individual Stats with Totals and Deltas
+        prev_s = prev_stories.get(title, {})
+        curr_reads = stats["reads"]
+        prev_reads_s = prev_s.get("reads", curr_reads)
+        curr_votes = stats["votes"]
+        prev_votes_s = prev_s.get("votes", curr_votes)
+        curr_engaged = stats.get("engaged") or 0
+        prev_engaged_s = prev_s.get("engaged") or 0
+        
+        sms_text += f" Reads: {curr_reads} ({get_growth_str(curr_reads, prev_reads_s)})\n"
+        sms_text += f" Votes: {curr_votes} ({get_growth_str(curr_votes, prev_votes_s)})\n"
+        sms_text += f" Engaged: {curr_engaged} ({get_growth_str(curr_engaged, prev_engaged_s)})\n"
+        
+        if prev_s and stats["parts"] > prev_s.get("parts", 0):
+            sms_text += " ✨ NEW CHAPTER!\n"
+        
+        # Rankings (Published Only)
         if current.get("rankings") and title in current["rankings"]:
             ranks = current["rankings"][title]
             if isinstance(ranks, dict):
+                sms_text += " 🏆 Ranks:\n"
                 for cat, rank in list(ranks.items())[:4]:
                     curr_val = int(rank.strip('#'))
                     prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
@@ -467,7 +474,13 @@ def main():
                         elif delta < 0: delta_str = f" ({delta})"
                     sms_text += f"  - {cat.title()}: {rank}{delta_str}\n"
 
-    # PEAKS
+        # Engagement Insights (if available)
+        if title in engagement_stats:
+            eng = engagement_stats[title]
+            if eng['readers_today'] > 0:
+                sms_text += f" 📈 Daily Readers: {eng['readers_today']}\n"
+
+    # 📈 WEEKLY SUMMARY / PEAKS (Global Published Totals)
     is_sunday = datetime.now().weekday() == 6
     if is_sunday and len(history) >= 2:
         top_day, top_gain = None, float("-inf")
@@ -481,7 +494,7 @@ def main():
         p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
         sms_text += f"📅 ACTIVE PEAK: {p_str}\n"
 
-    # RECENT ACTIVITY (Deduping)
+    # 💬 RECENT ACTIVITY (Deduping)
     seen_act = set()
     unique_activity = []
     for a in recent_activity:
@@ -495,8 +508,8 @@ def main():
         comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
         if voters or comms:
             sms_text += "---\n💬 ACTIVITY:\n"
-            if voters: sms_text += f"Voters: {', '.join(voters[:5])}\n"
-            if comms: sms_text += f"Comments: {', '.join(comms[:5])}\n"
+            if voters: sms_text += f" Voters: {', '.join(voters[:5])}\n"
+            if comms: sms_text += f" Comments: {', '.join(comms[:5])}\n"
 
     print("Sending Notification:")
     print(sms_text)
