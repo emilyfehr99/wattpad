@@ -4,8 +4,8 @@ env:
 
 on:
   schedule:
-    # ~8:30 PM Central: CDT = 01:30 UTC next day; CST = 02:30 UTC (GitHub cron is UTC).
-    - cron: '30 1 * * *'
+    # 10 PM Eastern Time: EDT = 02:00 UTC (Next Day); EST = 03:00 UTC (Next Day).
+    - cron: '0 2 * * *'
   workflow_dispatch: {}
 
 permissions:
