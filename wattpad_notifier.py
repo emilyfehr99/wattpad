@@ -431,16 +431,16 @@ def main():
 
     # 4. BUILD NOTIFICATION MESSAGE
     now_str = datetime.now().strftime("%m/%d %H:%M")
-    sms_text = f"📚 Wattpad Update ({now_str}):\n"
+    sms_text = f"WATTPAD UPDATE ({now_str}):\n"
     
     # ACCOUNT STATS
-    sms_text += f"---\n👤 ACCOUNT: {WATTPAD_USERNAME}\n"
+    sms_text += f"---\nACCOUNT: {WATTPAD_USERNAME}\n"
     sms_text += f"Followers: {current['followers']} (+{current['followers'] - prev_fols})\n"
     
-    # 🏆 INDIVIDUAL STORY REPORTS (Split Up with Full Totals)
+    # INDIVIDUAL STORY REPORTS (Split Up with Full Totals)
     prev_rankings = previous.get("rankings", {})
     for title, stats in published_stories.items():
-        sms_text += f"\n📕 {title.upper()}:\n"
+        sms_text += f"\n>>> {title.upper()}:\n"
         
         # Individual Stats with Totals and Deltas
         prev_s = prev_stories.get(title, {})
@@ -456,13 +456,13 @@ def main():
         sms_text += f" Engaged: {curr_engaged} ({get_growth_str(curr_engaged, prev_engaged_s)})\n"
         
         if prev_s and stats["parts"] > prev_s.get("parts", 0):
-            sms_text += " ✨ NEW CHAPTER!\n"
+            sms_text += " * NEW CHAPTER!\n"
         
         # Rankings (Published Only)
         if current.get("rankings") and title in current["rankings"]:
             ranks = current["rankings"][title]
             if isinstance(ranks, dict):
-                sms_text += " 🏆 All Ranks:\n"
+                sms_text += " All Ranks:\n"
                 for cat, rank in list(ranks.items()):
                     curr_val = int(rank.strip('#'))
                     prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
@@ -478,9 +478,9 @@ def main():
         if title in engagement_stats:
             eng = engagement_stats[title]
             if eng['readers_today'] > 0:
-                sms_text += f" 📈 Daily Readers: {eng['readers_today']}\n"
+                sms_text += f" Daily Readers: {eng['readers_today']}\n"
 
-    # 📈 WEEKLY SUMMARY / PEAKS (Global Published Totals)
+    # WEEKLY SUMMARY / PEAKS (Global Published Totals)
     is_sunday = datetime.now().weekday() == 6
     if is_sunday and len(history) >= 2:
         top_day, top_gain = None, float("-inf")
@@ -488,13 +488,13 @@ def main():
             prev_h, curr_h = history[i-1], history[i]
             gains = (curr_h["reads"] - prev_h["reads"]) + (curr_h["votes"] - prev_h["votes"])
             if gains > top_gain: top_gain, top_day = gains, curr_h["date"]
-        if top_day: sms_text += f"---\n📅 WEEKLY PEAK: {top_day} (+{top_gain})\n"
+        if top_day: sms_text += f"---\nWEEKLY PEAK: {top_day} (+{top_gain})\n"
     
     if peak_hour is not None:
         p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
-        sms_text += f"📅 ACTIVE PEAK: {p_str}\n"
+        sms_text += f"ACTIVE PEAK: {p_str}\n"
 
-    # 💬 RECENT ACTIVITY (Deduping)
+    # RECENT ACTIVITY (Deduping)
     seen_act = set()
     unique_activity = []
     for a in recent_activity:
@@ -507,7 +507,7 @@ def main():
         voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
         comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
         if voters or comms:
-            sms_text += "---\n💬 ACTIVITY:\n"
+            sms_text += "---\nACTIVITY:\n"
             if voters: sms_text += f" Voters: {', '.join(voters[:5])}\n"
             if comms: sms_text += f" Comments: {', '.join(comms[:5])}\n"
 
