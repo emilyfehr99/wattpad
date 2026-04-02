@@ -1,13 +1,13 @@
 {
     "followers": 9,
-    "reads": 12121,
-    "votes": 258,
+    "reads": 12577,
+    "votes": 304,
     "comments": 14,
     "stories": {
         "Offside With You": {
             "id": "408937854",
-            "reads": 57,
-            "votes": 11,
+            "reads": 99,
+            "votes": 24,
             "comments": 0,
             "parts": 34,
             "completed": false,
@@ -24,12 +24,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 12063,
-            "votes": 247,
+            "reads": 12477,
+            "votes": 280,
             "comments": 14,
             "parts": 54,
             "completed": true,
-            "engaged": 278
+            "engaged": 286
         },
         "Cold Season": {
             "id": "407749887",
@@ -41,7 +41,7 @@
             "engaged": null
         }
     },
-    "engaged_readers": 282,
+    "engaged_readers": 290,
     "rankings": {
         "Offside With You": {
             "young_adult": "#35",
@@ -69,11 +69,13 @@
     },
     "engagement": {
         "Offside With You": {
-            "readers_today": 4,
+            "readers_today": 3,
             "avg_readers": 0,
             "retention": [
-                "40%",
-                "100%",
+                "67%",
+                "50%",
+                "50%",
+                "67%",
                 "50%"
             ]
         },
@@ -83,12 +85,12 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 53,
-            "avg_readers": 37,
+            "readers_today": 42,
+            "avg_readers": 38,
             "retention": [
-                "57%",
+                "56%",
                 "64%",
-                "63%",
+                "61%",
                 "84%",
                 "37%"
             ]
@@ -100,12 +102,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-03-27",
-            "reads": 8887,
-            "votes": 208,
-            "comments": 13
-        },
         {
             "date": "2026-03-28",
             "reads": 9636,
@@ -147,7 +143,13 @@
             "reads": 12121,
             "votes": 258,
             "comments": 14
+        },
+        {
+            "date": "2026-04-02",
+            "reads": 12577,
+            "votes": 304,
+            "comments": 14
         }
     ],
-    "timestamp": "2026-04-01T04:32:42.882553"
+    "timestamp": "2026-04-02T04:11:10.924511"
 }
