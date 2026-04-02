@@ -462,8 +462,8 @@ def main():
         if current.get("rankings") and title in current["rankings"]:
             ranks = current["rankings"][title]
             if isinstance(ranks, dict):
-                sms_text += " 🏆 Ranks:\n"
-                for cat, rank in list(ranks.items())[:4]:
+                sms_text += " 🏆 All Ranks:\n"
+                for cat, rank in list(ranks.items()):
                     curr_val = int(rank.strip('#'))
                     prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
                     delta_str = ""
