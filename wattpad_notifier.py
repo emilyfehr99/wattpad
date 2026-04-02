@@ -393,12 +393,31 @@ def main():
         sign = "+" if diff >= 0 else ""
         return f"{sign}{diff} | {pct:.1f}%"
 
-    prev_reads = previous.get("reads", current["reads"])
-    prev_votes = previous.get("votes", current["votes"])
-    prev_engaged = previous.get("engaged_readers", current.get("engaged_readers", 0))
+    # 1. IDENTIFY PUBLISHED VS DRAFT STORIES
+    # Ensure draft flag is preserved from previous stats
+    for title, stats in current.get("stories", {}).items():
+        if previous.get("stories", {}).get(title, {}).get("draft"):
+            stats["draft"] = True
+
+    published_stories = {}
+    for title, stats in current.get("stories", {}).items():
+        if not stats.get("draft", False):
+            published_stories[title] = stats
+
+    # 2. RECALCULATE TOTALS (Published Only)
+    current["reads"] = sum(s["reads"] for s in published_stories.values())
+    current["votes"] = sum(s["votes"] for s in published_stories.values())
+    current["comments"] = sum(s["comments"] for s in published_stories.values())
+    current["engaged_readers"] = sum((s.get("engaged") or 0) for s in published_stories.values())
+
+    # Recalculate Previous Totals (Published Only) for accurate deltas
+    prev_stories = previous.get("stories", {})
+    prev_reads = sum(prev_stories.get(t, {}).get("reads", published_stories.get(t, {}).get("reads", 0)) for t in published_stories)
+    prev_votes = sum(prev_stories.get(t, {}).get("votes", published_stories.get(t, {}).get("votes", 0)) for t in published_stories)
+    prev_engaged = sum((prev_stories.get(t, {}).get("engaged") or published_stories.get(t, {}).get("engaged") or 0) for t in published_stories)
     prev_fols = previous.get("followers", current["followers"])
 
-    # Historical Tracking (Keep last 7 entries)
+    # 3. HISTORICAL TRACKING (Published Only)
     history = previous.get("history", [])
     history.append({
         "date": datetime.now().strftime("%Y-%m-%d"),
@@ -406,86 +425,38 @@ def main():
         "votes": current["votes"],
         "comments": current["comments"]
     })
-    # Keep only the most recent 8 (to calculate 7 deltas)
     if len(history) > 8:
         history = history[-8:]
     current["history"] = history
 
-    # Sunday Weekly Summary
-    sunday_summary = ""
-    is_sunday = datetime.now().weekday() == 6
-    if is_sunday and len(history) >= 2:
-        top_day = None
-        # Gains can be negative (API corrections), so start at -inf to ensure we pick something.
-        top_gain = float("-inf")
-        for i in range(1, len(history)):
-            prev_h = history[i-1]
-            curr_h = history[i]
-            gains = (curr_h["reads"] - prev_h["reads"]) + \
-                    (curr_h["votes"] - prev_h["votes"]) + \
-                    (curr_h["comments"] - prev_h["comments"])
-            if gains > top_gain:
-                top_gain = gains
-                top_day = curr_h["date"]
-        
-        if top_day:
-            sunday_summary = f"---\nWEEKLY SUMMARY:\nTOP DAY: {top_day} (+{top_gain} gains)\n"
-    elif is_sunday:
-        # If history is missing/too short (e.g. first run, older stats file),
-        # still show a TOP DAY based on today's delta vs the last saved totals.
-        today_date = datetime.now().strftime("%Y-%m-%d")
-        prev_reads = previous.get("reads", current["reads"])
-        prev_votes = previous.get("votes", current["votes"])
-        prev_comments = previous.get("comments", current["comments"])
-        gains_today = (current["reads"] - prev_reads) + (current["votes"] - prev_votes) + (current["comments"] - prev_comments)
-        sunday_summary = f"---\nWEEKLY SUMMARY:\nTOP DAY: {today_date} (+{gains_today} gains)\n"
-
+    # 4. BUILD NOTIFICATION MESSAGE
     now_str = datetime.now().strftime("%m/%d %H:%M")
-    sms_text = f"Wattpad Update ({now_str}):\n"
+    sms_text = f"📚 Wattpad Update ({now_str}):\n"
+    
+    # OVERALL PERFORMANCE
+    sms_text += f"---\n📊 OVERALL STATS:\n"
     sms_text += f"Reads: {current['reads']} ({get_growth_str(current['reads'], prev_reads)})\n"
     sms_text += f"Votes: {current['votes']} ({get_growth_str(current['votes'], prev_votes)})\n"
     sms_text += f"Engaged: {current['engaged_readers']} ({get_growth_str(current['engaged_readers'], prev_engaged)})\n"
     sms_text += f"Followers: {current['followers']} (+{current['followers'] - prev_fols})\n"
     
-    if sunday_summary:
-        sms_text += sunday_summary
-    
-    if peak_hour is not None:
-        p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
-        sms_text += f"PEAK ACTIVITY: {p_str}\n"
-
-    # Dedup by user and type for display
-    seen_act = set()
-    unique_activity = []
-    for a in recent_activity:
-        key = (a['user'], a['type'])
-        if key not in seen_act:
-            unique_activity.append(a)
-            seen_act.add(key)
-    
-    prev_stories = previous.get("stories", {})
+    # INDIVIDUAL STORY REPORTS (Split Up)
     prev_rankings = previous.get("rankings", {})
-
-    # Story specific summaries
-    story_summaries = []
-    for title, stats in current.get("stories", {}).items():
-        if stats.get("draft", False):
-            continue
-            
+    for title, stats in published_stories.items():
+        sms_text += f"\n📕 {title.upper()}:\n"
         prev_s = prev_stories.get(title, {})
         d_reads = stats["reads"] - prev_s.get("reads", stats["reads"])
         d_votes = stats["votes"] - prev_s.get("votes", stats["votes"])
-        line = f"{title}: +{d_reads}R, +{d_votes}V"
+        sms_text += f"  Growth: +{d_reads}R, +{d_votes}V"
         if prev_s and stats["parts"] > prev_s.get("parts", 0):
-            line += " | NEW CH!"
-            
-        # Add rankings for this story if available
+            sms_text += " | NEW CH!"
+        sms_text += "\n"
+        
+        # Rankings
         if current.get("rankings") and title in current["rankings"]:
             ranks = current["rankings"][title]
             if isinstance(ranks, dict):
-                r_lines = []
-                # Select top 3 categories for brevity
-                for cat, rank in list(ranks.items())[:3]:
+                for cat, rank in list(ranks.items())[:4]:
                     curr_val = int(rank.strip('#'))
                     prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
                     delta_str = ""
@@ -494,24 +465,38 @@ def main():
                         delta = prev_val - curr_val
                         if delta > 0: delta_str = f" (+{delta})"
                         elif delta < 0: delta_str = f" ({delta})"
-                    r_lines.append(f"  {cat}: {rank}{delta_str}")
-                if r_lines:
-                    line += "\n" + "\n".join(r_lines)
-        
-        story_summaries.append(line)
+                    sms_text += f"  - {cat.title()}: {rank}{delta_str}\n"
 
-    if story_summaries:
-        sms_text += "---\nSTORY UPDATES:\n" + "\n".join(story_summaries)
-        
-    # Impactful Metrics Section (Voters/Commenters)
+    # PEAKS
+    is_sunday = datetime.now().weekday() == 6
+    if is_sunday and len(history) >= 2:
+        top_day, top_gain = None, float("-inf")
+        for i in range(1, len(history)):
+            prev_h, curr_h = history[i-1], history[i]
+            gains = (curr_h["reads"] - prev_h["reads"]) + (curr_h["votes"] - prev_h["votes"])
+            if gains > top_gain: top_gain, top_day = gains, curr_h["date"]
+        if top_day: sms_text += f"---\n📅 WEEKLY PEAK: {top_day} (+{top_gain})\n"
+    
+    if peak_hour is not None:
+        p_str = f"{peak_hour % 12 or 12} {'PM' if peak_hour >= 12 else 'AM'}"
+        sms_text += f"📅 ACTIVE PEAK: {p_str}\n"
+
+    # RECENT ACTIVITY (Deduping)
+    seen_act = set()
+    unique_activity = []
+    for a in recent_activity:
+        key = (a['user'], a['type'])
+        if key not in seen_act:
+            unique_activity.append(a)
+            seen_act.add(key)
+
     if unique_activity:
-        sms_text += "---\nRECENT ACTIVITY:\n"
         voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
         comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
-        if voters:
-            sms_text += f"Voters: {', '.join(voters[:5])}\n"
-        if comms:
-            sms_text += f"Comms: {', '.join(comms[:5])}\n"
+        if voters or comms:
+            sms_text += "---\n💬 ACTIVITY:\n"
+            if voters: sms_text += f"Voters: {', '.join(voters[:5])}\n"
+            if comms: sms_text += f"Comments: {', '.join(comms[:5])}\n"
 
     print("Sending Notification:")
     print(sms_text)

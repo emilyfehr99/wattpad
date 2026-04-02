@@ -29,7 +29,8 @@
             "comments": 0,
             "parts": 5,
             "completed": false,
-            "engaged": null
+            "engaged": null,
+            "draft": true
         },
         "Cold Season": {
             "id": "407749887",
@@ -38,7 +39,8 @@
             "comments": 0,
             "parts": 21,
             "completed": false,
-            "engaged": null
+            "engaged": null,
+            "draft": true
         }
     },
     "engaged_readers": 298,
@@ -104,45 +106,39 @@
     },
     "history": [
         {
-            "date": "2026-03-28",
-            "reads": 9638,
-            "votes": 217,
+            "date": "2026-03-21",
+            "reads": 4389,
+            "votes": 197,
             "comments": 13
         },
         {
-            "date": "2026-03-29",
-            "reads": 10133,
-            "votes": 217,
+            "date": "2026-03-22",
+            "reads": 4845,
+            "votes": 199,
             "comments": 13
         },
         {
-            "date": "2026-03-29",
-            "reads": 10165,
-            "votes": 217,
+            "date": "2026-03-23",
+            "reads": 5426,
+            "votes": 200,
             "comments": 13
         },
         {
-            "date": "2026-03-30",
-            "reads": 10913,
-            "votes": 241,
-            "comments": 14
+            "date": "2026-03-24",
+            "reads": 6234,
+            "votes": 207,
+            "comments": 13
         },
         {
-            "date": "2026-03-31",
-            "reads": 11655,
-            "votes": 250,
-            "comments": 14
-        },
-        {
-            "date": "2026-04-01",
-            "reads": 12121,
-            "votes": 258,
-            "comments": 14
+            "date": "2026-03-24",
+            "reads": 6954,
+            "votes": 208,
+            "comments": 13
         },
         {
             "date": "2026-04-02",
-            "reads": 12577,
-            "votes": 304,
+            "reads": 12836,
+            "votes": 316,
             "comments": 14
         },
         {
@@ -152,5 +148,5 @@
             "comments": 14
         }
     ],
-    "timestamp": "2026-04-02T21:24:09.233607"
+    "timestamp": "2026-04-02T16:27:09.275547"
 }
