@@ -467,54 +467,51 @@ def main():
     prev_rankings = previous.get("rankings", {})
 
     # Story specific summaries
-    story_summary_lines = []
-    target_story = "Blue Lines, Red Flags"
-    
-    if target_story in current["stories"]:
-        stats = current["stories"][target_story]
-        prev_s = prev_stories.get(target_story, {})
+    story_summaries = []
+    for title, stats in current.get("stories", {}).items():
+        if stats.get("draft", False):
+            continue
+            
+        prev_s = prev_stories.get(title, {})
         d_reads = stats["reads"] - prev_s.get("reads", stats["reads"])
         d_votes = stats["votes"] - prev_s.get("votes", stats["votes"])
-        line = f"{target_story}: +{d_reads}R, +{d_votes}V"
+        line = f"{title}: +{d_reads}R, +{d_votes}V"
         if prev_s and stats["parts"] > prev_s.get("parts", 0):
             line += " | NEW CH!"
-        story_summary_lines.append(line)
-
-    if current.get("rankings") and target_story in current["rankings"]:
-        sms_text += "---\nRANKS (+/-):\n"
-        ranks = current["rankings"][target_story]
-        prev_story_ranks = prev_rankings.get(target_story, {})
-        if isinstance(ranks, dict):
-            sms_text += f"{target_story}\n"
-            for cat, rank in list(ranks.items())[:15]:
-                curr_val = int(rank.strip('#'))
-                prev_val_str = prev_story_ranks.get(cat, "").strip('#')
-                delta_str = ""
-                if prev_val_str:
-                    prev_val = int(prev_val_str)
-                    delta = prev_val - curr_val
-                    if delta > 0: delta_str = f" (+{delta})"
-                    elif delta < 0: delta_str = f" ({delta})"
-                sms_text += f"  {cat}: {rank}{delta_str}\n"
-
-    # Impactful Metrics Section
-    if (target_story in engagement_stats) or unique_activity:
-        sms_text += "---\nREADER INSIGHTS:\n"
-        if target_story in engagement_stats:
-            eng = engagement_stats[target_story]
-            sms_text += f"{target_story}:\n"
-            sms_text += f"  Daily Readers: {eng['readers_today']}\n"
+            
+        # Add rankings for this story if available
+        if current.get("rankings") and title in current["rankings"]:
+            ranks = current["rankings"][title]
+            if isinstance(ranks, dict):
+                r_lines = []
+                # Select top 3 categories for brevity
+                for cat, rank in list(ranks.items())[:3]:
+                    curr_val = int(rank.strip('#'))
+                    prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
+                    delta_str = ""
+                    if prev_val_str:
+                        prev_val = int(prev_val_str)
+                        delta = prev_val - curr_val
+                        if delta > 0: delta_str = f" (+{delta})"
+                        elif delta < 0: delta_str = f" ({delta})"
+                    r_lines.append(f"  {cat}: {rank}{delta_str}")
+                if r_lines:
+                    line += "\n" + "\n".join(r_lines)
         
-        if unique_activity:
-            voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
-            comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
-            if voters:
-                sms_text += f"Voters: {', '.join(voters[:5])}\n"
-            if comms:
-                sms_text += f"Comms: {', '.join(comms[:5])}\n"
+        story_summaries.append(line)
 
-    if story_summary_lines:
-        sms_text += "---\n" + "\n".join(story_summary_lines)
+    if story_summaries:
+        sms_text += "---\nSTORY UPDATES:\n" + "\n".join(story_summaries)
+        
+    # Impactful Metrics Section (Voters/Commenters)
+    if unique_activity:
+        sms_text += "---\nRECENT ACTIVITY:\n"
+        voters = [a['user'] for a in unique_activity if a['type'] == 'VOTE']
+        comms = [a['user'] for a in unique_activity if a['type'] == 'COMMENT']
+        if voters:
+            sms_text += f"Voters: {', '.join(voters[:5])}\n"
+        if comms:
+            sms_text += f"Comms: {', '.join(comms[:5])}\n"
 
     print("Sending Notification:")
     print(sms_text)

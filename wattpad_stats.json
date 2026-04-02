@@ -20,7 +20,8 @@
             "comments": 0,
             "parts": 5,
             "completed": false,
-            "engaged": null
+            "engaged": null,
+            "draft": true
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
@@ -38,7 +39,8 @@
             "comments": 0,
             "parts": 21,
             "completed": false,
-            "engaged": null
+            "engaged": null,
+            "draft": true
         }
     },
     "engaged_readers": 290,
