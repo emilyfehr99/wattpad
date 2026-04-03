@@ -1,13 +1,13 @@
 {
     "followers": 9,
-    "reads": 12846,
-    "votes": 316,
+    "reads": 12986,
+    "votes": 318,
     "comments": 14,
     "stories": {
         "Offside With You": {
             "id": "408937854",
-            "reads": 128,
-            "votes": 24,
+            "reads": 137,
+            "votes": 26,
             "comments": 0,
             "parts": 34,
             "completed": false,
@@ -15,7 +15,7 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 12718,
+            "reads": 12849,
             "votes": 292,
             "comments": 14,
             "parts": 54,
@@ -106,12 +106,6 @@
     },
     "history": [
         {
-            "date": "2026-03-22",
-            "reads": 4845,
-            "votes": 199,
-            "comments": 13
-        },
-        {
             "date": "2026-03-23",
             "reads": 5426,
             "votes": 200,
@@ -152,7 +146,13 @@
             "reads": 12846,
             "votes": 316,
             "comments": 14
+        },
+        {
+            "date": "2026-04-03",
+            "reads": 12986,
+            "votes": 318,
+            "comments": 14
         }
     ],
-    "timestamp": "2026-04-02T21:34:41.783458"
+    "timestamp": "2026-04-03T04:25:46.534830"
 }
