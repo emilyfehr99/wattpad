@@ -326,19 +326,46 @@ def get_wattpad_rankings(session, current):
 
 
 def send_sms(message):
+    """
+    Sends the notification message via Email-to-SMS.
+    Splits long messages into chunks to prevent carrier truncation.
+    """
     try:
-        msg = MIMEMultipart()
-        msg['From'] = SENDER_EMAIL
-        msg['To'] = PHONE_EMAIL
-        msg['Subject'] = "Wattpad Update"
-        msg.attach(MIMEText(message, 'plain'))
+        # Carrier-safe chunk size (usually 800-1000 for email-to-sms)
+        CHUNK_SIZE = 800
+        chunks = []
+        
+        if len(message) <= CHUNK_SIZE:
+            chunks = [message]
+        else:
+            # Smart split at line breaks
+            current_chunk = ""
+            for line in message.splitlines(keepends=True):
+                if len(current_chunk) + len(line) > CHUNK_SIZE:
+                    if current_chunk:
+                        chunks.append(current_chunk.strip())
+                    current_chunk = line
+                else:
+                    current_chunk += line
+            if current_chunk:
+                chunks.append(current_chunk.strip())
 
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(SENDER_EMAIL, SENDER_PASSWORD)
-        server.send_message(msg)
-        server.quit()
-        print("Successfully sent SMS notification")
+        for i, chunk in enumerate(chunks):
+            msg = MIMEMultipart()
+            msg['From'] = SENDER_EMAIL
+            msg['To'] = PHONE_EMAIL
+            # Add part number to subject if multiple
+            part_info = f" (Part {i+1}/{len(chunks)})" if len(chunks) > 1 else ""
+            msg['Subject'] = f"Wattpad Update{part_info}"
+            msg.attach(MIMEText(chunk, 'plain'))
+
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(SENDER_EMAIL, SENDER_PASSWORD)
+            server.send_message(msg)
+            server.quit()
+        
+        print(f"Successfully sent {len(chunks)} SMS notification part(s)")
     except Exception as e:
         print(f"Failed to send SMS: {e}")
 
