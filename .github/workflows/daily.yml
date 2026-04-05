@@ -4,8 +4,9 @@ env:
 
 on:
   schedule:
-    # 10 PM Eastern Time: EDT = 02:00 UTC (Next Day); EST = 03:00 UTC (Next Day).
-    - cron: '0 2 * * *'
+    # Set to 8 PM ET (00:00 UTC) to compensate for GitHub's ~2hr cron delay.
+    # Aiming for actual arrival around 10 PM ET.
+    - cron: '0 0 * * *'
   workflow_dispatch: {}
 
 permissions:
