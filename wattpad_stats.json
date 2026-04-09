@@ -1,9 +1,18 @@
 {
     "followers": 12,
-    "reads": 15440,
-    "votes": 342,
+    "reads": 15731,
+    "votes": 348,
     "comments": 15,
     "stories": {
+        "Offside With You": {
+            "id": "408937854",
+            "reads": 427,
+            "votes": 52,
+            "comments": 1,
+            "parts": 34,
+            "completed": false,
+            "engaged": 13
+        },
         "Just This Once": {
             "id": "409845274",
             "reads": 0,
@@ -13,23 +22,14 @@
             "completed": false,
             "engaged": null
         },
-        "Offside With You": {
-            "id": "408937854",
-            "reads": 376,
-            "votes": 48,
-            "comments": 1,
-            "parts": 34,
-            "completed": false,
-            "engaged": 11
-        },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 15064,
-            "votes": 294,
+            "reads": 15304,
+            "votes": 296,
             "comments": 14,
             "parts": 54,
             "completed": true,
-            "engaged": 342
+            "engaged": 350
         },
         "Founder": {
             "id": "409366155",
@@ -52,56 +52,57 @@
             "draft": true
         }
     },
-    "engaged_readers": 353,
+    "engaged_readers": 363,
     "rankings": {
         "Offside With You": {
-            "gayfiction": "#36",
-            "young_adult": "#44",
-            "lgbtfiction": "#59",
-            "sports": "#52",
-            "hockey": "#45",
-            "womanxwoman": "#30",
-            "lgbt": "#148",
-            "wlw": "#194"
+            "young_adult": "#25",
+            "gayfiction": "#30",
+            "lgbtfiction": "#73",
+            "sports": "#68",
+            "hockey": "#39",
+            "slowburn": "#924",
+            "lgbt": "#131",
+            "wlw": "#167"
         },
         "Blue Lines, Red Flags": {
-            "slowburn": "#4",
-            "lesbianromance": "#2",
-            "youngadult": "#162",
-            "gaylove": "#114",
-            "lgbtfiction": "#55",
-            "sports": "#114",
-            "hockey": "#123",
+            "lesbianromance": "#3",
+            "slowburn": "#14",
+            "gaylove": "#210",
+            "sports": "#151",
+            "lgbtfiction": "#175",
+            "youngadult": "#799",
+            "hockey": "#121",
             "carolineharvey": "#1",
-            "wlwbook": "#29",
-            "lesbian": "#664"
+            "wlwbook": "#30",
+            "lesbian": "#660",
+            "wlw": "#994"
         }
     },
     "engagement": {
+        "Offside With You": {
+            "readers_today": 9,
+            "avg_readers": 1,
+            "retention": [
+                "67%",
+                "50%",
+                "60%",
+                "100%",
+                "86%"
+            ]
+        },
         "Just This Once": {
             "readers_today": 0,
             "avg_readers": 0,
             "retention": []
         },
-        "Offside With You": {
-            "readers_today": 9,
-            "avg_readers": 1,
-            "retention": [
-                "56%",
-                "67%",
-                "82%",
-                "57%",
-                "71%"
-            ]
-        },
         "Blue Lines, Red Flags": {
-            "readers_today": 50,
-            "avg_readers": 41,
+            "readers_today": 30,
+            "avg_readers": 42,
             "retention": [
-                "53%",
+                "54%",
                 "60%",
-                "57%",
-                "83%",
+                "58%",
+                "84%",
                 "35%"
             ]
         },
@@ -117,12 +118,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-02",
-            "reads": 12835,
-            "votes": 316,
-            "comments": 14
-        },
         {
             "date": "2026-04-02",
             "reads": 12846,
@@ -164,7 +159,13 @@
             "reads": 15440,
             "votes": 342,
             "comments": 15
+        },
+        {
+            "date": "2026-04-09",
+            "reads": 15731,
+            "votes": 348,
+            "comments": 15
         }
     ],
-    "timestamp": "2026-04-08T01:08:55.826965"
+    "timestamp": "2026-04-09T00:59:05.528795"
 }
