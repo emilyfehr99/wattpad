@@ -331,12 +331,12 @@ def send_sms(message):
     Splits long messages into chunks to prevent carrier truncation.
     """
     try:
-        # Carrier-safe chunk size (usually 800-1000 for email-to-sms)
-        CHUNK_SIZE = 800
+        import time
+        CHUNK_SIZE = 250 # Reduced for Telus gateway reliability
         chunks = []
         
         if len(message) <= CHUNK_SIZE:
-            chunks = [message]
+            chunks.append(message)
         else:
             # Smart split at line breaks
             current_chunk = ""
@@ -350,22 +350,31 @@ def send_sms(message):
             if current_chunk:
                 chunks.append(current_chunk.strip())
 
-        for i, chunk in enumerate(chunks):
-            msg = MIMEMultipart()
-            msg['From'] = SENDER_EMAIL
-            msg['To'] = PHONE_EMAIL
-            # Add part number to subject if multiple
-            part_info = f" (Part {i+1}/{len(chunks)})" if len(chunks) > 1 else ""
-            msg['Subject'] = f"Wattpad Update{part_info}"
-            msg.attach(MIMEText(chunk, 'plain'))
-
-            server = smtplib.SMTP('smtp.gmail.com', 587)
+        try:
+            server = smtplib.SMTP("smtp.gmail.com", 587)
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
-            server.send_message(msg)
+
+            for i, chunk in enumerate(chunks):
+                msg = MIMEMultipart()
+                msg["From"] = SENDER_EMAIL
+                msg["To"] = PHONE_EMAIL
+                # Add Part X/Y to subject for clarity
+                subject = "Wattpad Update"
+                if len(chunks) > 1:
+                    subject += f" (Part {i+1}/{len(chunks)})"
+                msg["Subject"] = subject
+                
+                msg.attach(MIMEText(chunk, "plain"))
+                server.send_message(msg)
+                print(f"Sent part {i+1}/{len(chunks)}")
+                if len(chunks) > 1:
+                    time.sleep(1) # Small delay to ensure order and avoid carrier throttling
+            
             server.quit()
-        
-        print(f"Successfully sent {len(chunks)} SMS notification part(s)")
+            print(f"Successfully sent {len(chunks)} SMS notification part(s)")
+        except Exception as e:
+            print(f"Failed to send SMS: {e}")
     except Exception as e:
         print(f"Failed to send SMS: {e}")
 
@@ -422,14 +431,28 @@ def main():
 
     # 1. IDENTIFY PUBLISHED VS DRAFT STORIES
     # Ensure draft flag is preserved from previous stats
+    # Also automatically flag NEW stories as drafts if they have 0 reads and failed rankings
     for title, stats in current.get("stories", {}).items():
-        if previous.get("stories", {}).get(title, {}).get("draft"):
+        prev_story = previous.get("stories", {}).get(title)
+        
+        # Preserve existing draft flag
+        if prev_story and prev_story.get("draft"):
             stats["draft"] = True
+            continue
+            
+        # Auto-detect NEW drafts: 0 reads AND no rankings in the new scrape
+        if not prev_story:
+            has_ranks = False
+            if current.get("rankings") and title in current["rankings"]:
+                ranks = current["rankings"][title]
+                if ranks and isinstance(ranks, dict) and len(ranks) > 0:
+                    has_ranks = True
+            
+            if stats.get("reads", 0) == 0 and not has_ranks:
+                print(f"Auto-detecting '{title}' as a draft (0 reads and no rankings).")
+                stats["draft"] = True
 
-    published_stories = {}
-    for title, stats in current.get("stories", {}).items():
-        if not stats.get("draft", False):
-            published_stories[title] = stats
+    published_stories = {t: s for t, s in current.get("stories", {}).items() if not s.get("draft")}
 
     # 2. RECALCULATE TOTALS (Published Only)
     current["reads"] = sum(s["reads"] for s in published_stories.values())
@@ -485,21 +508,25 @@ def main():
         if prev_s and stats["parts"] > prev_s.get("parts", 0):
             sms_text += " * NEW CHAPTER!\n"
         
-        # Rankings (Published Only)
+        # Rankings (Published Only) - Simplified Net Delta
         if current.get("rankings") and title in current["rankings"]:
             ranks = current["rankings"][title]
-            if isinstance(ranks, dict):
-                sms_text += " All Ranks:\n"
+            if isinstance(ranks, dict) and ranks:
+                total_delta = 0
+                deltas = []
                 for cat, rank in list(ranks.items()):
                     curr_val = int(rank.strip('#'))
                     prev_val_str = prev_rankings.get(title, {}).get(cat, "").strip('#')
-                    delta_str = ""
                     if prev_val_str:
                         prev_val = int(prev_val_str)
                         delta = prev_val - curr_val
-                        if delta > 0: delta_str = f" (+{delta})"
-                        elif delta < 0: delta_str = f" ({delta})"
-                    sms_text += f"  - {cat.title()}: {rank}{delta_str}\n"
+                        total_delta += delta
+                        if delta != 0:
+                            deltas.append(f"{'+' if delta > 0 else ''}{delta}")
+                
+                delta_str = f"{'+' if total_delta > 0 else ''}{total_delta}"
+                comp_str = f" ({', '.join(deltas)})" if deltas else ""
+                sms_text += f" Rank Delta: {delta_str}{comp_str}\n"
 
         # Engagement Insights (if available)
         if title in engagement_stats:
