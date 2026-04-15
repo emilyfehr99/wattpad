@@ -440,17 +440,21 @@ def main():
             stats["draft"] = True
             continue
             
-        # Auto-detect NEW drafts: 0 reads AND no rankings in the new scrape
-        if not prev_story:
-            has_ranks = False
-            if current.get("rankings") and title in current["rankings"]:
-                ranks = current["rankings"][title]
-                if ranks and isinstance(ranks, dict) and len(ranks) > 0:
-                    has_ranks = True
-            
-            if stats.get("reads", 0) == 0 and not has_ranks:
-                print(f"Auto-detecting '{title}' as a draft (0 reads and no rankings).")
+        # Detect drafts: 0 total reads AND no rankings in the latest scrape
+        has_ranks = False
+        if current.get("rankings") and title in current["rankings"]:
+            ranks = current["rankings"][title]
+            if ranks and isinstance(ranks, dict) and len(ranks) > 0:
+                has_ranks = True
+        
+        if stats.get("reads", 0) == 0 and not has_ranks:
+            # Only auto-flag as draft if it doesn't have multiple parts already
+            # (Author might have published 10 parts but 0 reads yet)
+            if stats.get("parts", 0) <= 1:
+                print(f"Auto-detecting '{title}' as a draft (0 reads, no rankings, <= 1 part).")
                 stats["draft"] = True
+            else:
+                print(f"Note: '{title}' has 0 reads but {stats.get('parts')} parts. Not auto-flagging as draft yet.")
 
     published_stories = {t: s for t, s in current.get("stories", {}).items() if not s.get("draft")}
 
