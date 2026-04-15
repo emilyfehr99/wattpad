@@ -1,13 +1,13 @@
 {
-    "followers": 12,
-    "reads": 17665,
-    "votes": 388,
+    "followers": 13,
+    "reads": 18074,
+    "votes": 390,
     "comments": 21,
     "stories": {
         "Offside With You": {
             "id": "408937854",
-            "reads": 710,
-            "votes": 69,
+            "reads": 737,
+            "votes": 71,
             "comments": 1,
             "parts": 34,
             "completed": false,
@@ -24,12 +24,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 16955,
+            "reads": 17337,
             "votes": 319,
             "comments": 20,
             "parts": 54,
             "completed": true,
-            "engaged": 382
+            "engaged": 393
         },
         "Founder": {
             "id": "409366155",
@@ -52,37 +52,37 @@
             "draft": true
         }
     },
-    "engaged_readers": 399,
+    "engaged_readers": 410,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#18",
-            "gayfiction": "#24",
-            "sports": "#46",
-            "lgbtfiction": "#74",
-            "hockey": "#47",
+            "young_adult": "#20",
+            "sports": "#48",
+            "gayfiction": "#52",
+            "lgbtfiction": "#94",
+            "hockey": "#55",
             "slowburn": "#892"
         },
         "Blue Lines, Red Flags": {
             "lesbianromance": "#4",
-            "slowburn": "#43",
-            "sports": "#474",
-            "lgbtfiction": "#576",
-            "hockey": "#323",
+            "slowburn": "#51",
+            "sports": "#528",
+            "lgbtfiction": "#685",
+            "hockey": "#342",
             "carolineharvey": "#1",
-            "wlwbook": "#35",
-            "lesbian": "#660"
+            "wlwbook": "#34",
+            "lesbian": "#743"
         }
     },
     "engagement": {
         "Offside With You": {
-            "readers_today": 13,
+            "readers_today": 8,
             "avg_readers": 3,
             "retention": [
+                "72%",
                 "88%",
-                "82%",
-                "76%",
-                "88%",
-                "100%"
+                "90%",
+                "100%",
+                "89%"
             ]
         },
         "Just This Once": {
@@ -96,9 +96,9 @@
             "retention": [
                 "55%",
                 "60%",
-                "58%",
+                "57%",
                 "82%",
-                "37%"
+                "36%"
             ]
         },
         "Founder": {
@@ -113,12 +113,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-07",
-            "reads": 14914,
-            "votes": 337,
-            "comments": 15
-        },
         {
             "date": "2026-04-08",
             "reads": 15440,
@@ -160,7 +154,13 @@
             "reads": 17665,
             "votes": 388,
             "comments": 21
+        },
+        {
+            "date": "2026-04-15",
+            "reads": 18074,
+            "votes": 390,
+            "comments": 21
         }
     ],
-    "timestamp": "2026-04-14T01:13:51.893704"
+    "timestamp": "2026-04-15T01:12:09.957458"
 }
