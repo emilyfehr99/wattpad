@@ -1,26 +1,26 @@
 {
     "followers": 14,
-    "reads": 19379,
-    "votes": 447,
-    "comments": 29,
+    "reads": 19886,
+    "votes": 461,
+    "comments": 33,
     "stories": {
         "Untitled Story": {
             "id": "410188084",
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 9,
+            "parts": 10,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 888,
-            "votes": 94,
-            "comments": 1,
+            "reads": 945,
+            "votes": 107,
+            "comments": 5,
             "parts": 34,
             "completed": false,
-            "engaged": 20
+            "engaged": 23
         },
         "Just This Once": {
             "id": "409845274",
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 18491,
-            "votes": 353,
+            "reads": 18941,
+            "votes": 354,
             "comments": 28,
             "parts": 54,
             "completed": true,
-            "engaged": 425
+            "engaged": 432
         },
         "Founder": {
             "id": "409366155",
@@ -62,23 +62,23 @@
             "draft": true
         }
     },
-    "engaged_readers": 445,
+    "engaged_readers": 455,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#106",
-            "gayfiction": "#215",
-            "sports": "#288",
-            "lgbtfiction": "#347",
-            "hockey": "#168"
+            "young_adult": "#95",
+            "gayfiction": "#244",
+            "sports": "#293",
+            "lgbtfiction": "#368",
+            "hockey": "#166"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#8",
-            "slowburn": "#85",
-            "sports": "#745",
-            "hockey": "#467",
+            "lesbianromance": "#10",
+            "slowburn": "#88",
+            "sports": "#741",
+            "hockey": "#475",
             "carolineharvey": "#1",
-            "wlwbook": "#9",
-            "lesbian": "#698"
+            "wlwbook": "#7",
+            "lesbian": "#707"
         }
     },
     "engagement": {
@@ -88,7 +88,7 @@
             "retention": []
         },
         "Offside With You": {
-            "readers_today": 4,
+            "readers_today": 6,
             "avg_readers": 4,
             "retention": [
                 "64%",
@@ -105,10 +105,10 @@
         },
         "Blue Lines, Red Flags": {
             "readers_today": 25,
-            "avg_readers": 39,
+            "avg_readers": 38,
             "retention": [
                 "56%",
-                "61%",
+                "62%",
                 "59%",
                 "83%",
                 "36%"
@@ -126,12 +126,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-12",
-            "reads": 16845,
-            "votes": 366,
-            "comments": 20
-        },
         {
             "date": "2026-04-13",
             "reads": 17285,
@@ -173,7 +167,13 @@
             "reads": 19379,
             "votes": 447,
             "comments": 29
+        },
+        {
+            "date": "2026-04-20",
+            "reads": 19886,
+            "votes": 461,
+            "comments": 33
         }
     ],
-    "timestamp": "2026-04-19T01:16:17.299852"
+    "timestamp": "2026-04-20T01:16:14.386070"
 }
