@@ -1,26 +1,26 @@
 {
     "followers": 14,
-    "reads": 20726,
-    "votes": 469,
+    "reads": 21101,
+    "votes": 481,
     "comments": 39,
     "stories": {
-        "Untitled Story": {
+        "Secret Season": {
             "id": "410188084",
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 10,
+            "parts": 11,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 1154,
-            "votes": 115,
+            "reads": 1207,
+            "votes": 125,
             "comments": 10,
             "parts": 34,
             "completed": false,
-            "engaged": 29
+            "engaged": 33
         },
         "Just This Once": {
             "id": "409845274",
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 19572,
-            "votes": 354,
+            "reads": 19894,
+            "votes": 356,
             "comments": 29,
             "parts": 54,
             "completed": true,
-            "engaged": 454
+            "engaged": 459
         },
         "Founder": {
             "id": "409366155",
@@ -62,38 +62,40 @@
             "draft": true
         }
     },
-    "engaged_readers": 483,
+    "engaged_readers": 492,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#106",
-            "gayfiction": "#257",
-            "sports": "#310",
-            "lgbtfiction": "#360",
-            "hockey": "#196"
+            "young_adult": "#110",
+            "gayfiction": "#259",
+            "lgbtfiction": "#346",
+            "sports": "#320",
+            "hockey": "#210"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#11",
-            "slowburn": "#95",
+            "lesbianromance": "#14",
+            "slowburn": "#93",
             "carolineharvey": "#1",
-            "wlwbook": "#28",
-            "lesbian": "#694"
+            "wlwbook": "#31",
+            "lesbian": "#543",
+            "wlw": "#856",
+            "lgbt": "#932"
         }
     },
     "engagement": {
-        "Untitled Story": {
+        "Secret Season": {
             "readers_today": 0,
             "avg_readers": 0,
             "retention": []
         },
         "Offside With You": {
-            "readers_today": 8,
+            "readers_today": 14,
             "avg_readers": 5,
             "retention": [
                 "62%",
-                "80%",
-                "87%",
-                "80%",
-                "91%"
+                "76%",
+                "78%",
+                "75%",
+                "90%"
             ]
         },
         "Just This Once": {
@@ -103,13 +105,13 @@
         },
         "Blue Lines, Red Flags": {
             "readers_today": 24,
-            "avg_readers": 37,
+            "avg_readers": 36,
             "retention": [
-                "56%",
+                "57%",
                 "63%",
                 "59%",
                 "83%",
-                "36%"
+                "37%"
             ]
         },
         "Founder": {
@@ -124,12 +126,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-15",
-            "reads": 18074,
-            "votes": 390,
-            "comments": 21
-        },
         {
             "date": "2026-04-16",
             "reads": 18519,
@@ -171,7 +167,13 @@
             "reads": 20726,
             "votes": 469,
             "comments": 39
+        },
+        {
+            "date": "2026-04-23",
+            "reads": 21101,
+            "votes": 481,
+            "comments": 39
         }
     ],
-    "timestamp": "2026-04-22T01:12:04.076889"
+    "timestamp": "2026-04-23T01:17:28.457551"
 }
