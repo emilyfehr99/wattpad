@@ -1,6 +1,6 @@
 {
     "followers": 14,
-    "reads": 21450,
+    "reads": 21579,
     "votes": 484,
     "comments": 40,
     "stories": {
@@ -9,18 +9,18 @@
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 12,
+            "parts": 13,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 1271,
+            "reads": 1282,
             "votes": 128,
             "comments": 10,
             "parts": 34,
             "completed": false,
-            "engaged": 36
+            "engaged": 37
         },
         "Just This Once": {
             "id": "409845274",
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 20179,
+            "reads": 20297,
             "votes": 356,
             "comments": 30,
             "parts": 54,
             "completed": true,
-            "engaged": 463
+            "engaged": 472
         },
         "Founder": {
             "id": "409366155",
@@ -62,21 +62,22 @@
             "draft": true
         }
     },
-    "engaged_readers": 499,
+    "engaged_readers": 509,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#104",
-            "gayfiction": "#259",
-            "lgbtfiction": "#349",
-            "sports": "#334",
-            "hockey": "#218"
+            "young_adult": "#108",
+            "gayfiction": "#252",
+            "lgbtfiction": "#353",
+            "sports": "#316",
+            "hockey": "#210"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#19",
-            "slowburn": "#122",
+            "lesbianromance": "#22",
+            "slowburn": "#118",
             "carolineharvey": "#1",
-            "wlwbook": "#30",
-            "lesbian": "#679"
+            "wlwbook": "#31",
+            "lesbian": "#628",
+            "wlw": "#970"
         }
     },
     "engagement": {
@@ -86,14 +87,14 @@
             "retention": []
         },
         "Offside With You": {
-            "readers_today": 13,
+            "readers_today": 5,
             "avg_readers": 6,
             "retention": [
-                "63%",
-                "78%",
-                "79%",
-                "78%",
-                "91%"
+                "64%",
+                "80%",
+                "76%",
+                "80%",
+                "90%"
             ]
         },
         "Just This Once": {
@@ -102,13 +103,13 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 23,
-            "avg_readers": 34,
+            "readers_today": 21,
+            "avg_readers": 33,
             "retention": [
                 "57%",
                 "63%",
                 "59%",
-                "83%",
+                "84%",
                 "37%"
             ]
         },
@@ -124,12 +125,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-17",
-            "reads": 18682,
-            "votes": 441,
-            "comments": 21
-        },
         {
             "date": "2026-04-18",
             "reads": 19018,
@@ -171,7 +166,13 @@
             "reads": 21450,
             "votes": 484,
             "comments": 40
+        },
+        {
+            "date": "2026-04-25",
+            "reads": 21579,
+            "votes": 484,
+            "comments": 40
         }
     ],
-    "timestamp": "2026-04-24T01:17:04.918211"
+    "timestamp": "2026-04-25T01:10:10.514133"
 }
