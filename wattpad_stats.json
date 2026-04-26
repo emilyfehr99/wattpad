@@ -1,7 +1,7 @@
 {
     "followers": 14,
-    "reads": 21579,
-    "votes": 484,
+    "reads": 21662,
+    "votes": 485,
     "comments": 40,
     "stories": {
         "Secret Season": {
@@ -9,13 +9,13 @@
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 13,
+            "parts": 14,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 1282,
+            "reads": 1319,
             "votes": 128,
             "comments": 10,
             "parts": 34,
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 20297,
-            "votes": 356,
+            "reads": 20343,
+            "votes": 357,
             "comments": 30,
             "parts": 54,
             "completed": true,
-            "engaged": 472
+            "engaged": 474
         },
         "Founder": {
             "id": "409366155",
@@ -62,22 +62,21 @@
             "draft": true
         }
     },
-    "engaged_readers": 509,
+    "engaged_readers": 511,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#108",
-            "gayfiction": "#252",
-            "lgbtfiction": "#353",
-            "sports": "#316",
-            "hockey": "#210"
+            "young_adult": "#106",
+            "gayfiction": "#253",
+            "sports": "#295",
+            "lgbtfiction": "#359",
+            "hockey": "#190"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#22",
-            "slowburn": "#118",
+            "lesbianromance": "#16",
+            "slowburn": "#84",
             "carolineharvey": "#1",
-            "wlwbook": "#31",
-            "lesbian": "#628",
-            "wlw": "#970"
+            "wlwbook": "#33",
+            "lesbian": "#688"
         }
     },
     "engagement": {
@@ -87,12 +86,12 @@
             "retention": []
         },
         "Offside With You": {
-            "readers_today": 5,
+            "readers_today": 2,
             "avg_readers": 6,
             "retention": [
                 "64%",
                 "80%",
-                "76%",
+                "73%",
                 "80%",
                 "90%"
             ]
@@ -103,8 +102,8 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 21,
-            "avg_readers": 33,
+            "readers_today": 16,
+            "avg_readers": 31,
             "retention": [
                 "57%",
                 "63%",
@@ -125,12 +124,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-18",
-            "reads": 19018,
-            "votes": 442,
-            "comments": 22
-        },
         {
             "date": "2026-04-19",
             "reads": 19379,
@@ -172,7 +165,13 @@
             "reads": 21579,
             "votes": 484,
             "comments": 40
+        },
+        {
+            "date": "2026-04-26",
+            "reads": 21662,
+            "votes": 485,
+            "comments": 40
         }
     ],
-    "timestamp": "2026-04-25T01:10:10.514133"
+    "timestamp": "2026-04-26T01:18:47.217191"
 }
