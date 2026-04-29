@@ -1,6 +1,6 @@
 {
     "followers": 14,
-    "reads": 22105,
+    "reads": 22286,
     "votes": 485,
     "comments": 40,
     "stories": {
@@ -9,13 +9,13 @@
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 15,
+            "parts": 16,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 1338,
+            "reads": 1342,
             "votes": 128,
             "comments": 10,
             "parts": 34,
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 20767,
+            "reads": 20944,
             "votes": 357,
             "comments": 30,
             "parts": 54,
             "completed": true,
-            "engaged": 482
+            "engaged": 486
         },
         "Founder": {
             "id": "409366155",
@@ -62,21 +62,21 @@
             "draft": true
         }
     },
-    "engaged_readers": 520,
+    "engaged_readers": 524,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#103",
-            "gayfiction": "#245",
-            "sports": "#287",
-            "lgbtfiction": "#381",
-            "hockey": "#188"
+            "young_adult": "#106",
+            "gayfiction": "#227",
+            "sports": "#301",
+            "lgbtfiction": "#376",
+            "hockey": "#177"
         },
         "Blue Lines, Red Flags": {
-            "lesbianromance": "#18",
-            "slowburn": "#77",
-            "carolineharvey": "#1",
+            "slowburn": "#82",
+            "lesbianromance": "#36",
+            "carolineharvey": "#2",
             "wlwbook": "#34",
-            "lesbian": "#780"
+            "lesbian": "#856"
         }
     },
     "engagement": {
@@ -102,11 +102,11 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 16,
-            "avg_readers": 29,
+            "readers_today": 19,
+            "avg_readers": 27,
             "retention": [
-                "57%",
-                "62%",
+                "58%",
+                "63%",
                 "59%",
                 "84%",
                 "36%"
@@ -124,12 +124,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-21",
-            "reads": 20327,
-            "votes": 469,
-            "comments": 36
-        },
         {
             "date": "2026-04-22",
             "reads": 20726,
@@ -171,7 +165,13 @@
             "reads": 22105,
             "votes": 485,
             "comments": 40
+        },
+        {
+            "date": "2026-04-29",
+            "reads": 22286,
+            "votes": 485,
+            "comments": 40
         }
     ],
-    "timestamp": "2026-04-28T01:26:36.049479"
+    "timestamp": "2026-04-29T01:29:23.493042"
 }
