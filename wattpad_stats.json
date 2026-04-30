@@ -1,6 +1,6 @@
 {
     "followers": 14,
-    "reads": 22286,
+    "reads": 22370,
     "votes": 485,
     "comments": 40,
     "stories": {
@@ -9,13 +9,13 @@
             "reads": 0,
             "votes": 0,
             "comments": 0,
-            "parts": 16,
+            "parts": 17,
             "completed": false,
             "engaged": null
         },
         "Offside With You": {
             "id": "408937854",
-            "reads": 1342,
+            "reads": 1352,
             "votes": 128,
             "comments": 10,
             "parts": 34,
@@ -34,12 +34,12 @@
         },
         "Blue Lines, Red Flags": {
             "id": "407902208",
-            "reads": 20944,
+            "reads": 21018,
             "votes": 357,
             "comments": 30,
             "parts": 54,
             "completed": true,
-            "engaged": 486
+            "engaged": 487
         },
         "Founder": {
             "id": "409366155",
@@ -62,21 +62,21 @@
             "draft": true
         }
     },
-    "engaged_readers": 524,
+    "engaged_readers": 525,
     "rankings": {
         "Offside With You": {
-            "young_adult": "#106",
-            "gayfiction": "#227",
-            "sports": "#301",
+            "young_adult": "#88",
+            "gayfiction": "#240",
+            "sports": "#280",
             "lgbtfiction": "#376",
-            "hockey": "#177"
+            "hockey": "#183"
         },
         "Blue Lines, Red Flags": {
-            "slowburn": "#82",
-            "lesbianromance": "#36",
+            "slowburn": "#94",
+            "lesbianromance": "#37",
             "carolineharvey": "#2",
             "wlwbook": "#34",
-            "lesbian": "#856"
+            "lesbian": "#913"
         }
     },
     "engagement": {
@@ -102,8 +102,8 @@
             "retention": []
         },
         "Blue Lines, Red Flags": {
-            "readers_today": 19,
-            "avg_readers": 27,
+            "readers_today": 15,
+            "avg_readers": 26,
             "retention": [
                 "58%",
                 "63%",
@@ -124,12 +124,6 @@
         }
     },
     "history": [
-        {
-            "date": "2026-04-22",
-            "reads": 20726,
-            "votes": 469,
-            "comments": 39
-        },
         {
             "date": "2026-04-23",
             "reads": 21101,
@@ -171,7 +165,13 @@
             "reads": 22286,
             "votes": 485,
             "comments": 40
+        },
+        {
+            "date": "2026-04-30",
+            "reads": 22370,
+            "votes": 485,
+            "comments": 40
         }
     ],
-    "timestamp": "2026-04-29T01:29:23.493042"
+    "timestamp": "2026-04-30T01:28:21.530160"
 }
